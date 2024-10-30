@@ -1,0 +1,8 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "build",
+  },
+  "include": ["index.ts", "global.d.ts", "**/*.tsx"],
+  "exclude": ["build"]
+}

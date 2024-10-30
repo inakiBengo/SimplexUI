@@ -1,0 +1,9 @@
+@import './color.css';
+@import './radius.css';
+@import './spaces.css';
+@import './typography.module.css';
+
+.simplexui-themes {
+  appearance: none;
+  box-sizing: border-box;
+}

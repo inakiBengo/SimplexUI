@@ -1,0 +1,36 @@
+.base {
+  width: fit-content;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  color: hsl(var(--current-color));
+}
+.label {
+  font-weight: var(--font-weight-bold);
+  width: fit-content;
+  position: relative;
+}
+.base:has(input[aria-required]) .label::after {
+  content: "*";
+  position: absolute;
+  color: var(--error-5);
+  top: -8px;
+  right: -8px;
+}
+.description, .error  {
+  font-weight: var(--font-weight-bold);
+  composes: text-1 from '../../../styles/typography.module.css';
+  color: var(--neutral-8);
+}
+.error {
+  color: var(--error-8);
+}
+.wrapper {
+  border: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  font-weight: 500;
+  gap: var(--space-1);
+}

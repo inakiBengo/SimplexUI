@@ -1,0 +1,57 @@
+{
+  "compilerOptions": {
+
+    "target": "ESNext",
+    "module": "ESNext",
+    "lib": ["DOM", "ESNext"],
+    "jsx": "react-jsx",
+    "experimentalDecorators": true,                   /* Enable experimental support for legacy experimental decorators. */
+
+    /* Modules */
+    "moduleResolution": "Bundler",                     /* Specify how TypeScript looks up a file from a given module specifier. */
+    // "baseUrl": "./",                                  /* Specify the base directory to resolve non-relative module names. */
+    "resolveJsonModule": true,
+
+    /* JavaScript Support */
+    "allowJs": true,                                  /* Allow JavaScript files to be a part of your program. Use the 'checkJS' option to get errors from these files. */
+    // "checkJs": true,                                  /* Enable error reporting in type-checked JavaScript files. */
+
+    /* Emit */
+    "declaration": true,
+    "declarationMap": true,                           /* Create sourcemaps for d.ts files. */
+    "sourceMap": true,
+    // "noEmit": true,                                   /* Disable emitting files from a compilation. */
+    "outDir": "build",                                   /* Specify an output folder for all emitted files. */
+    "removeComments": true,                           /* Disable emitting comments. */
+    // "noEmitOnError": true,                            /* Disable emitting files if any type checking errors are reported. */
+
+    /* Interop Constraints */
+    // "isolatedDeclarations": true,                     /* Require sufficient annotation on exports so other tools can trivially generate declaration files. */
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,            /* Ensure that casing is correct in imports. */
+
+    /* Type Checking */
+    "strict": true,                                      /* Enable all strict type-checking options. */
+    "noImplicitAny": true,                            /* Enable error reporting for expressions and declarations with an implied 'any' type. */
+    "strictNullChecks": true,                         /* When type checking, take into account 'null' and 'undefined'. */
+    "strictFunctionTypes": true,                      /* When assigning functions, check to ensure parameters and the return values are subtype-compatible. */
+    "strictBindCallApply": true,                      /* Check that the arguments for 'bind', 'call', and 'apply' methods match the original function. */
+    "useUnknownInCatchVariables": true,               /* Default catch clause variables as 'unknown' instead of 'any'. */
+    "alwaysStrict": true,                             /* Ensure 'use strict' is always emitted. */
+    "noUnusedLocals": true,/*****/                           /* Enable error reporting when local variables aren't read. */
+    "noUnusedParameters": true,/*****/                       /* Raise an error when a function parameter isn't read. */
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitOverride": true,/*****/                        /* Ensure overriding members in derived classes are marked with an override modifier. */
+    // "noPropertyAccessFromIndexSignature": true,       /* Enforces using indexed accessors for keys declared using an indexed type. */
+    // "allowUnusedLabels": true,                        /* Disable error reporting for unused labels. */
+    "allowUnreachableCode": true,/*****/                      /* Disable error reporting for unreachable code. */
+
+    /* Completeness */
+    "skipLibCheck": true,
+    "isolatedModules": true, /** delete **/
+    "types": ["node", "jest", "@testing-library/jest-dom"]
+  },
+  "exclude": ["node_modules", "build"],
+  "include": ["packages"]
+}
