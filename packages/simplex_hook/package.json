@@ -1,0 +1,18 @@
+{
+  "name": "simplex_hook",
+  "version": "0.0.0",
+  "description": "bla bla bla",
+  "keywords": ["hooks", "react"],
+  "private": true,
+  "license": "MIT",
+  "type": "module",
+  "main": "src/index.ts",
+  "module": "src/index.es.ts",
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {},
+  "devDependencies": {
+    "react": "^18.3.1"
+  }
+}
