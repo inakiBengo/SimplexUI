@@ -77,7 +77,6 @@ export function useCheckbox(props: CheckboxProps) {
     )
 
   /* INPUT */
-
   const { focusProps, isFocusVisible } = useFocusRing({
     autoFocus: otherProps.autoFocus,
   })
