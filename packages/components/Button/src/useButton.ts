@@ -1,6 +1,6 @@
-import { type HTMLSimplexuiProps, type GenericStyles, ReactRef, classnames } from '@simplexui/core'
+import { type HTMLSimplexuiProps, type GenericStyles, ReactRef, classnames } from 'core'
 
-import { useDOMRef } from '@simplexui/core'
+import { useDOMRef } from 'core'
 import { ReactNode, useCallback } from 'react'
 import styles from './styles/Button.module.css'
 import { useButtonGroupContext } from './ButtonGroupContext'

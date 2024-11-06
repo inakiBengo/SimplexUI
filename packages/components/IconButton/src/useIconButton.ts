@@ -1,4 +1,4 @@
-import { HTMLSimplexuiProps, GenericStyles, ReactRef, useDOMRef, classnames } from '@simplexui/core'
+import { HTMLSimplexuiProps, GenericStyles, ReactRef, useDOMRef, classnames } from 'core'
 import { ReactNode, useCallback } from 'react'
 
 import styles from './styles/IconButton.module.css'

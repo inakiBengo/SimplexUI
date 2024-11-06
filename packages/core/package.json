@@ -1,5 +1,5 @@
 {
-  "name": "@simplexui/core",
+  "name": "core",
   "version": "0.0.0",
   "description": "Reusable logic for components",
   "main": "src/index.ts",

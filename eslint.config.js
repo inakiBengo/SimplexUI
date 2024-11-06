@@ -37,6 +37,7 @@ export default [
       // stylistic
       '@stylistic/quotes': 'warn',
       '@stylistic/jsx-quotes': ['warn', 'prefer-single'],
+      '@stylistic/brace-style': ['1tbs'],
     },
   },
 ]

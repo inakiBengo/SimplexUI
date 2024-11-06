@@ -1,4 +1,4 @@
-import { classnames, HTMLSimplexuiProps, ReactRef } from '@simplexui/core'
+import { classnames, HTMLSimplexuiProps, ReactRef } from 'core'
 import styles from './Spinner.module.css'
 import { useCallback } from 'react'
 

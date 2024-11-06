@@ -28,7 +28,8 @@
     "@types/react-dom": "^18.3.0"
   },
   "dependencies": {
-    "@simplexui/core": "*",
+    "core": "*",
+    "simplex_hook": "*",
     "react-aria": "^3.35.0",
     "react-stately": "^3.33.0"
   }

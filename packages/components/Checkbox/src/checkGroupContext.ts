@@ -1,4 +1,4 @@
-import { createContext } from '@simplexui/core'
+import { createContext } from 'core'
 import { ContextType } from './useCheckboxGroup'
 
 export const [CheckboxGroupProvider, useCheckboxGroupContext] = createContext<ContextType>({

@@ -1,4 +1,4 @@
-import { HTMLSimplexuiProps, ReactRef, useDOMRef, GenericStyles, classnames } from '@simplexui/core'
+import { HTMLSimplexuiProps, ReactRef, useDOMRef, GenericStyles } from 'core'
 import { ReactNode, useCallback } from 'react'
 import {
   AriaCheckboxProps,

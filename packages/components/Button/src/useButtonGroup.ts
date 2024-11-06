@@ -1,4 +1,4 @@
-import { HTMLSimplexuiProps, ReactRef } from '@simplexui/core'
+import { HTMLSimplexuiProps, ReactRef } from 'core'
 import styles from './styles/ButtonGroup.module.css'
 import { useCallback, useMemo } from 'react'
 
