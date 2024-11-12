@@ -13,7 +13,7 @@ type Story = StoryObj<typeof Accordion>
 export const Default: Story = {
   render: args => (
     <Accordion {...args}>
-      <AccordionItem>
+      <AccordionItem title='Accordion 1' subtitle='Subtitle accordion 1'>
       </AccordionItem>
     </Accordion>
   ),

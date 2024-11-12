@@ -1,0 +1,34 @@
+.wrap {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--accordion-bg);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  border: none;
+  background-color: transparent;
+  color: var(--neutral-9);
+
+  .wrapTitle {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+  }
+
+  .expandIcon {
+    width: 1rem;
+    margin-left: auto;
+  }
+}
+
+.title {
+  font-weight: 700;
+  composes: text-3 from '../../../styles/typography.module.css';
+}
+.subtitle {
+  font-weight: 700;
+  color: var(--neutral-7);
+  composes: text-1 from '../../../styles/typography.module.css';
+}

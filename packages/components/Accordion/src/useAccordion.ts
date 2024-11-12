@@ -3,6 +3,7 @@ import { useMemo } from 'react'
 import {
   useAccordion as useSimplexAccordion,
   AccordionProps as SimplexAccordionProps,
+  type AccordionState,
 } from 'simplex_hook'
 
 interface Props extends HTMLSimplexuiProps<'div'> {
@@ -13,6 +14,8 @@ interface Props extends HTMLSimplexuiProps<'div'> {
   variant?: GenericStyles.Variant
 }
 
+export interface AccordionContext extends AccordionState {
+}
 export type AccordionProps = Props & SimplexAccordionProps
 
 export function useAccordion(props: AccordionProps) {
@@ -24,11 +27,11 @@ export function useAccordion(props: AccordionProps) {
   } = props
 
   const Element = as || 'div'
-  const {state, props: wrapProps} = useSimplexAccordion(otherProps)
+  const { state, props: wrapProps } = useSimplexAccordion(otherProps)
   const domRef = useDOMRef(ref)
 
-  const context = useMemo(() => ({
-    ...state
+  const context = useMemo<AccordionState>(() => ({
+    ...state,
   }), [])
 
   return {

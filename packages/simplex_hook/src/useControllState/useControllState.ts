@@ -23,7 +23,7 @@ export function useControllState<T = {}>(controlledValue: T, defaultValue: T, on
         onChange(newValue)
       }
     }
-  }, [onChange, isControlled, value])
+  }, [onChange, isControlled, currentValue])
 
   return [value, setValue]
 }

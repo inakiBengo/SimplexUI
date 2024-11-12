@@ -1,5 +1,6 @@
 import { forwardRef } from 'react'
 import { useAccordion, AccordionProps } from './useAccordion'
+import { AccordionProvider } from './accordion_context'
 
 const Accordion = forwardRef<HTMLDivElement, AccordionProps>((props, ref) => {
   const {
@@ -7,15 +8,15 @@ const Accordion = forwardRef<HTMLDivElement, AccordionProps>((props, ref) => {
     domRef,
     wrapProps,
     children,
-    context
+    context,
   } = useAccordion({ ...props, ref })
 
   return (
-    <Provider value={context}>
+    <AccordionProvider value={context}>
       <Element ref={domRef} {...wrapProps}>
         { children }
       </Element>
-    </Provider>
+    </AccordionProvider>
   )
 })
 

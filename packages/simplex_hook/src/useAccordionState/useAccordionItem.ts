@@ -1,48 +1,53 @@
 import * as React from 'react'
 import { AccordionState } from './index'
-import { chain, usePress, type PressHookProps } from 'react-aria'
+import { chain, Key, usePress, type PressHookProps } from 'react-aria'
 
 export interface AccordionItemState {
   readonly isDisabled: boolean
-  changeValue: (id: React.Key) => void
+  toggleValue: () => void
   readonly isActive: boolean
-  readonly key: React.Key
-  headerProps: React.DOMAttributes<HTMLElement>
+  readonly key: Key
 }
 
-export interface AccordionItemProps extends PressHookProps {
+export interface AccordionItemProps extends Omit<PressHookProps, 'ref'> {
   disabled?: boolean
-  key?: React.Key
-  default?: React.Key
+  key?: Key
+  default?: Key
 }
 
 export default function useAccordionItem(props: AccordionItemProps, AccordionState: AccordionState) {
-  const key = React.useId()
+  const key = React.useRef(props.key).current ?? React.useId()
   const isDisabled = AccordionState.isDisabled || props.disabled || false
-  const { toggleValue } = AccordionState
 
-  const changeValue = () => {
+  const toggleValue = () => {
     if (isDisabled) return
-    toggleValue(key)
+    AccordionState.onToggle(key)
   }
 
   const { pressProps } = usePress({
     ...props,
-    onPress: chain(changeValue(), props.onPress),
+    onPress: chain(toggleValue, props.onPress),
     isDisabled,
   })
 
+  const wrapProps = {
+    id: key,
+  }
+
+  const headerProps = {
+    ...pressProps,
+  }
+
   const state: AccordionItemState = {
     isDisabled,
-    changeValue,
+    toggleValue,
     isActive: AccordionState.isActive(key),
     key,
-    headerProps: {
-      ...pressProps
-    }
   }
 
   return {
     state,
+    wrapProps,
+    headerProps,
   }
 }
