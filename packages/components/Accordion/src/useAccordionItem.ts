@@ -26,6 +26,7 @@ export function useAccordionItem(props: AccordionItemProps) {
     title,
     dark = false,
     subtitle,
+    children,
     ...otherProps
   } = props
 
@@ -86,5 +87,6 @@ export function useAccordionItem(props: AccordionItemProps) {
     headerProps,
     title,
     subtitle,
+    children,
   }
 }

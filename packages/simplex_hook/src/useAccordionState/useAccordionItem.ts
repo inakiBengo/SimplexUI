@@ -9,45 +9,33 @@ export interface AccordionItemState {
   readonly key: Key
 }
 
-export interface AccordionItemProps extends Omit<PressHookProps, 'ref'> {
+export interface AccordionItemProps extends Omit<PressHookProps, 'ref' | 'isDisabled'> {
   disabled?: boolean
   key?: Key
   default?: Key
 }
 
-export default function useAccordionItem(props: AccordionItemProps, AccordionState: AccordionState) {
-  const key = React.useRef(props.key).current ?? React.useId()
-  const isDisabled = AccordionState.isDisabled || props.disabled || false
-
-  const toggleValue = () => {
-    if (isDisabled) return
-    AccordionState.onToggle(key)
-  }
+export default function useAccordionItem(props: AccordionItemProps, accordionState: AccordionState) {
+  const isDisabled = props.disabled || accordionState.isDisabled || false
+  const key = React.useRef(accordionState.generateId()).current
+  const {
+    onPress,
+  } = props
 
   const { pressProps } = usePress({
-    ...props,
-    onPress: chain(toggleValue, props.onPress),
-    isDisabled,
+    onPress: (e) => {
+      accordionState.toToggle(key)
+      onPress && onPress(e)
+    },
   })
 
-  const wrapProps = {
-    id: key,
-  }
-
-  const headerProps = {
-    ...pressProps,
-  }
-
-  const state: AccordionItemState = {
-    isDisabled,
-    toggleValue,
-    isActive: AccordionState.isActive(key),
-    key,
-  }
-
   return {
-    state,
-    wrapProps,
-    headerProps,
+    isDisabled,
+    key,
+    activeValues: accordionState.activeValues,
+    isActive: accordionState.isActive(key),
+    props: {
+      ...pressProps,
+    },
   }
 }

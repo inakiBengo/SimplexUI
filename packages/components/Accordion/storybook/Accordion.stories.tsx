@@ -14,6 +14,7 @@ export const Default: Story = {
   render: args => (
     <Accordion {...args}>
       <AccordionItem title='Accordion 1' subtitle='Subtitle accordion 1'>
+        <p>Hola mundo como estas</p>
       </AccordionItem>
     </Accordion>
   ),

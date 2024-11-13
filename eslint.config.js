@@ -30,7 +30,7 @@ export default [
       'no-implicit-coercion': 'warn',
       'no-async-promise-executor': 'error',
       'no-unused-vars': 'off',
-      'no-redeclare': [ 'warn', { "builtinGlobals": false }],
+      'no-redeclare': ['warn', { builtinGlobals: false }],
       // ts
       'plugin_ts/no-explicit-any': 'error',
       'plugin_ts/array-type': 'error',

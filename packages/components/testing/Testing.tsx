@@ -1,20 +1,24 @@
-import { useAccordion, useAccordionItem, type AccordionProps } from 'simplex_hook'
+import { useEffect } from 'react'
+import { PressEvent } from 'react-aria'
+import { AccordionProps, useAccordion, useAccordionItem } from 'simplex_hook'
 
-function Testing(AccordionProps: AccordionProps) {
-  const { state, props } = useAccordion(AccordionProps)
-  const { state: stateItem } = useAccordionItem(props, state)
-  const { buttonProps } = useAccordionItem(props, state)
-
-  function values() {
-    console.log(state.values)
+function Testing(props: AccordionProps) {
+  const { state } = useAccordion(props)
+  const itemObject = {
+    onPress: (e: PressEvent) => console.log(e),
   }
-  console.log(stateItem)
+  const { props: pressProps, isActive, activeValues } = useAccordionItem(itemObject, state)
+
+  useEffect(() => {
+    console.log(activeValues)
+  }, [activeValues])
 
   return (
     <>
-      <button onClick={() => values()}>value</button>
-      <button onClick={() => stateItem.toggleValue()}>toggle 1</button>
-      <button {...buttonProps}>toogle 2</button>
+      <button {...pressProps}>
+        button
+      </button>
+      { isActive ? 'true' : 'false' }
     </>
   )
 }

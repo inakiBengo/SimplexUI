@@ -1,13 +1,13 @@
 import { Key } from 'react-aria'
 import { useControllState } from '../useControllState/useControllState'
+import React from 'react'
 
 export interface AccordionState {
-  readonly values: Set<Key>
+  readonly activeValues: Set<Key>
   readonly isDisabled: boolean
-  readonly isMultiple: boolean
-  onToggle: (id: Key) => void
+  toToggle: (id: Key) => void
   isActive: (id: Key) => boolean
-  setExpandedValue: (v: Set<Key>) => void
+  generateId: () => string
 }
 
 export interface AccordionProps {
@@ -19,6 +19,7 @@ export interface AccordionProps {
 }
 
 export default function useAccordion(props: AccordionProps) {
+  let globalId = 0
   const {
     active,
     defaultActive,
@@ -27,40 +28,41 @@ export default function useAccordion(props: AccordionProps) {
     multiple = false,
   } = props
 
-  const [expandedValues, setExpandedValue] = useControllState<Set<Key>>(
+  const [activeState, setActiveState] = useControllState(
     active ? new Set(active) : undefined,
-    defaultActive ? new Set(defaultActive) : new Set<Key>(),
+    defaultActive ? new Set(defaultActive) : new Set(),
     onChange,
-    'Accordion',
+    'useAccordion',
   )
 
-  const onToggle = (id: Key) => {
-    const updateValue = new Set(expandedValues)
+  const toToggle = (key: Key) => {
+    const updateActives = new Set(activeState)
 
-    if (expandedValues.has(id)) {
-      updateValue.delete(id)
+    if (activeState.has(key)) {
+      updateActives.delete(key)
     } else {
-      if (!multiple) updateValue.clear()
-      updateValue.add(id)
+      if (!multiple) updateActives.clear()
+      updateActives.add(key)
     }
-
-    setExpandedValue(updateValue)
+    setActiveState(updateActives)
   }
 
-  const isActive = (id: Key) => expandedValues.has(id)
+  const isActive = (key: Key) => activeState.has(key)
 
-  const state: AccordionState = {
-    values: expandedValues,
+  const generateId = () => {
+    globalId += 1
+    return 'simplex-' + globalId
+  }
+
+  const state = {
     isDisabled: disabled,
-    isMultiple: multiple,
-    setExpandedValue,
-    onToggle,
+    activeValues: activeState,
+    toToggle,
     isActive,
+    generateId,
   }
 
   return {
     state,
-    props: {
-    },
   }
 }

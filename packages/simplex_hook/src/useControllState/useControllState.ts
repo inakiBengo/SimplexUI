@@ -2,10 +2,11 @@ import React from 'react'
 
 type State<T> = [T, (v: T) => void]
 
-export function useControllState<T = {}>(controlledValue: T | undefined, defaultValue: T, onChange?: (v: T) => void, name?: string): State<T> 
+export function useControllState<T = {}>(controlledValue: T | undefined, defaultValue: T, onChange?: (v: T) => void, name?: string): State<T>
 export function useControllState<T = {}>(controlledValue: T, defaultValue: T, onChange?: (v: T) => void, name?: string) {
   const { current: isControlled } = React.useRef(controlledValue !== undefined)
   const [currentValue, setValueState] = React.useState(controlledValue || defaultValue)
+  const { current: currentChange } = React.useRef(onChange)
 
   React.useEffect(() => {
     if (isControlled !== (controlledValue !== undefined)) {
@@ -13,17 +14,23 @@ export function useControllState<T = {}>(controlledValue: T, defaultValue: T, on
     }
   }, [controlledValue])
 
-  const value = isControlled ? controlledValue : currentValue
+  let value = isControlled ? controlledValue : currentValue
   const setValue = React.useCallback((newValue: T) => {
+    const onChangeCall = () => {
+      if (currentChange) {
+        if (!Object.is(currentValue, newValue)) {
+          currentChange(newValue)
+        }
+      }
+      if (!isControlled) {
+        value = newValue
+      }
+    }
     if (!isControlled) {
       setValueState(newValue)
     }
-    if (onChange) {
-      if (!Object.is(currentValue, newValue)) {
-        onChange(newValue)
-      }
-    }
-  }, [onChange, isControlled, currentValue])
+    onChangeCall()
+  }, [onChange, isControlled])
 
   return [value, setValue]
 }

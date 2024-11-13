@@ -9,6 +9,7 @@ const AccordionItem = forwardRef<HTMLDivElement, AccordionItemProps>((props, ref
     headerProps,
     title,
     subtitle,
+    children,
   } = useAccordionItem({ ...props, ref })
 
   return (
@@ -32,7 +33,7 @@ const AccordionItem = forwardRef<HTMLDivElement, AccordionItemProps>((props, ref
         </div>
       </button>
       <div>
-        Content
+        { children }
       </div>
     </Element>
   )
