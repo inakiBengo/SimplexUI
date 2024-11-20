@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { AccordionState } from './index'
-import { chain, Key, usePress, type PressHookProps } from 'react-aria'
+import { mergeProps, usePress } from 'react-aria'
+import type { PressProps, Key, Ref } from '../types'
 
 export interface AccordionItemState {
   readonly isDisabled: boolean
@@ -9,33 +10,51 @@ export interface AccordionItemState {
   readonly key: Key
 }
 
-export interface AccordionItemProps extends Omit<PressHookProps, 'ref' | 'isDisabled'> {
+export interface AccordionItemProps extends PressProps {
   disabled?: boolean
   key?: Key
   default?: Key
+  onFocus?: (e: React.FocusEvent) => void
+  onBlur?: (e: React.FocusEvent) => void
 }
 
-export default function useAccordionItem(props: AccordionItemProps, accordionState: AccordionState) {
+export default function useAccordionItem(props: AccordionItemProps, accordionState: AccordionState, ref?: Ref) {
   const isDisabled = props.disabled || accordionState.isDisabled || false
-  const key = React.useRef(accordionState.generateId()).current
-  const {
-    onPress,
-  } = props
+  const key = React.useMemo(() => props.key || accordionState.generateKey(), [props.key])
+  const refHeader = ref || React.useRef<HTMLButtonElement | null>(null)
+
+  React.useEffect(() => {
+    accordionState.register(key, refHeader)
+  }, [key, refHeader, accordionState])
 
   const { pressProps } = usePress({
     onPress: (e) => {
+      if (props?.onPress) props?.onPress(e)
       accordionState.toToggle(key)
-      onPress && onPress(e)
     },
+    isDisabled,
+    preventFocusOnPress: true,
+    allowTextSelectionOnPress: false,
   })
 
-  return {
-    isDisabled,
-    key,
-    activeValues: accordionState.activeValues,
-    isActive: accordionState.isActive(key),
-    props: {
-      ...pressProps,
+  const headerProps = React.useMemo(() => ({
+    ...mergeProps(
+      pressProps,
+    ),
+    ref: refHeader,
+    onFocus: (e: React.FocusEvent) => {
+      if (props.onFocus) props.onFocus(e)
+      accordionState.setFocus(key)
     },
+    onBlur: (e: React.FocusEvent) => {
+      if (props.onBlur) props.onBlur(e)
+      accordionState.setFocus(null)
+    },
+  }), [pressProps, refHeader, key, accordionState])
+
+  return {
+    headerProps,
+    isDisabled,
+    isActive: accordionState.isActive(key),
   }
 }

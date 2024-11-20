@@ -16,6 +16,12 @@ export const Default: Story = {
       <AccordionItem title='Accordion 1' subtitle='Subtitle accordion 1'>
         <p>Hola mundo como estas</p>
       </AccordionItem>
+      <AccordionItem title='Accordion 1' subtitle='Subtitle accordion 1'>
+        <p>Este es el segundo Accordion</p>
+      </AccordionItem>
+      <AccordionItem title='Accordion 1' subtitle='Subtitle accordion 1'>
+        <p>Este es el segundo Accordion</p>
+      </AccordionItem>
     </Accordion>
   ),
 }

@@ -1,5 +1,5 @@
 import { GenericStyles, HTMLSimplexuiProps, ReactRef, useDOMRef } from 'core'
-import { useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
 import {
   useAccordion as useSimplexAccordion,
   AccordionProps as SimplexAccordionProps,
@@ -27,18 +27,22 @@ export function useAccordion(props: AccordionProps) {
   } = props
 
   const Element = as || 'div'
-  const { state, props: wrapProps } = useSimplexAccordion(otherProps)
+  const { state, baseProps } = useSimplexAccordion(otherProps)
   const domRef = useDOMRef(ref)
 
   const context = useMemo<AccordionState>(() => ({
     ...state,
-  }), [])
+  }), [state])
+
+  const getBaseProps = useCallback(() => ({
+    ...baseProps,
+  }), [baseProps])
 
   return {
     Element,
     domRef,
     children,
-    wrapProps,
     context,
+    getBaseProps,
   }
 }

@@ -6,14 +6,14 @@ const Accordion = forwardRef<HTMLDivElement, AccordionProps>((props, ref) => {
   const {
     Element,
     domRef,
-    wrapProps,
     children,
     context,
+    getBaseProps,
   } = useAccordion({ ...props, ref })
 
   return (
     <AccordionProvider value={context}>
-      <Element ref={domRef} {...wrapProps}>
+      <Element ref={domRef} {...getBaseProps()}>
         { children }
       </Element>
     </AccordionProvider>

@@ -2,19 +2,19 @@ import { forwardRef } from 'react'
 import { useAccordionItem, type AccordionItemProps } from './useAccordionItem'
 import styles from './styles/AccordionItem.module.css'
 
-const AccordionItem = forwardRef<HTMLDivElement, AccordionItemProps>((props, ref) => {
+const AccordionItem = forwardRef<HTMLButtonElement, AccordionItemProps>((props, ref) => {
   const {
     Element,
-    wrapProps,
-    headerProps,
     title,
     subtitle,
     children,
+    getHeaderProps,
+    getPropsBase,
   } = useAccordionItem({ ...props, ref })
 
   return (
-    <Element {...wrapProps}>
-      <button {...headerProps}>
+    <Element {...getPropsBase()}>
+      <button {...getHeaderProps()}>
         <div className={styles.wrapTitle}>
           { title && <span className={styles.title}>{title}</span> }
           { subtitle && <span className={styles.subtitle}>{subtitle}</span> }

@@ -5,11 +5,11 @@ import {
 } from 'simplex_hook'
 
 import styles from './styles/AccordionItem.module.css'
-import { useMemo } from 'react'
+import { useCallback } from 'react'
 import { useAccordionContext } from './accordion_context'
 
 interface Props extends HTMLSimplexuiProps<'div'> {
-  ref?: ReactRef<HTMLDivElement>
+  ref?: ReactRef<HTMLButtonElement>
   dark?: boolean
   title: string
   subtitle?: string
@@ -34,36 +34,26 @@ export function useAccordionItem(props: AccordionItemProps) {
   const domRef = useDOMRef(ref)
 
   const {
-    state,
-    wrapProps: simpWrapProps,
-    headerProps: simpHeaderProps,
-  } = useSimplexAccordionItem(otherProps, context)
-
-  const {
+    headerProps,
     isDisabled,
     isActive,
-  } = state
+  } = useSimplexAccordionItem(otherProps, context, domRef)
 
-  /* Wrap */
-  const wrapClasses = classnames({
+  /* Base */
+  const baseClasses = classnames({
     dark: dark,
   },
   'simplexui-themes',
-  styles.wrap,
+  styles.base,
   )
 
-  const wrapProps = useMemo(() => ({
-    ...simpWrapProps,
-    'className': wrapClasses,
-    'data-disabled': isDisabled,
-    'data-active': isActive,
-    'ref': domRef,
+  const getPropsBase = useCallback(() => ({
+    'className': baseClasses,
+    'data-active': isActive || undefined,
+    'data-disabled': isDisabled || undefined,
   }), [
-    simpWrapProps,
-    wrapClasses,
-    isDisabled,
-    isActive,
     domRef,
+    isActive,
   ])
 
   /* header */
@@ -73,20 +63,21 @@ export function useAccordionItem(props: AccordionItemProps) {
   styles.header,
   )
 
-  const headerProps = useMemo(() => ({
-    ...simpHeaderProps,
+  const getHeaderProps = useCallback(() => ({
+    ...headerProps,
     className: headerClasses,
   }), [
-    simpHeaderProps,
+    headerProps,
     headerClasses,
+    domRef,
   ])
 
   return {
     Element,
-    wrapProps,
-    headerProps,
     title,
     subtitle,
     children,
+    getPropsBase,
+    getHeaderProps,
   }
 }

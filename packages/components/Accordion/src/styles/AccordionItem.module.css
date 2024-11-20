@@ -1,4 +1,4 @@
-.wrap {
+.base {
   display: flex;
   flex-direction: column;
   background-color: var(--accordion-bg);
