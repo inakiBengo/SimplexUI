@@ -36,6 +36,7 @@ export function useAccordionItem(props: AccordionItemProps) {
   const {
     headerProps,
     isDisabled,
+    isFocused,
     isActive,
   } = useSimplexAccordionItem(otherProps, context, domRef)
 
@@ -51,9 +52,12 @@ export function useAccordionItem(props: AccordionItemProps) {
     'className': baseClasses,
     'data-active': isActive || undefined,
     'data-disabled': isDisabled || undefined,
+    'data-focused': isFocused || undefined,
   }), [
     domRef,
     isActive,
+    isFocused,
+    isDisabled,
   ])
 
   /* header */
@@ -72,6 +76,15 @@ export function useAccordionItem(props: AccordionItemProps) {
     domRef,
   ])
 
+  const contentClasses = classnames({},
+    'simplexui-themes',
+    styles.content,
+  )
+
+  const getContentProps = useCallback(() => ({
+    className: contentClasses,
+  }), [])
+
   return {
     Element,
     title,
@@ -79,5 +92,8 @@ export function useAccordionItem(props: AccordionItemProps) {
     children,
     getPropsBase,
     getHeaderProps,
+    getContentProps,
+    isActive,
+    isDisabled,
   }
 }

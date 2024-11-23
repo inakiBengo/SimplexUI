@@ -1,10 +1,11 @@
-import { GenericStyles, HTMLSimplexuiProps, ReactRef, useDOMRef } from 'core'
+import { classnames, GenericStyles, HTMLSimplexuiProps, ReactRef, useDOMRef } from 'core'
 import { useCallback, useMemo } from 'react'
 import {
   useAccordion as useSimplexAccordion,
   AccordionProps as SimplexAccordionProps,
   type AccordionState,
 } from 'simplex_hook'
+import styles from './styles/Accordion.module.css'
 
 interface Props extends HTMLSimplexuiProps<'div'> {
   ref?: ReactRef<HTMLDivElement | null>
@@ -34,8 +35,11 @@ export function useAccordion(props: AccordionProps) {
     ...state,
   }), [state])
 
+  const classes = classnames({}, 'simplexui-themes', styles.base)
+
   const getBaseProps = useCallback(() => ({
     ...baseProps,
+    className: classes,
   }), [baseProps])
 
   return {

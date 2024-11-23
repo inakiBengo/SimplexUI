@@ -10,17 +10,19 @@ const AccordionItem = forwardRef<HTMLButtonElement, AccordionItemProps>((props, 
     children,
     getHeaderProps,
     getPropsBase,
+    getContentProps,
+    isDisabled,
   } = useAccordionItem({ ...props, ref })
 
   return (
     <Element {...getPropsBase()}>
       <button {...getHeaderProps()}>
-        <div className={styles.wrapTitle}>
+        <div className={styles.text}>
           { title && <span className={styles.title}>{title}</span> }
           { subtitle && <span className={styles.subtitle}>{subtitle}</span> }
         </div>
         <div className={styles.expandIcon}>
-          <svg viewBox='0 0 100 50' preserveAspectRatio='xMaxYMax'>
+          <svg viewBox='0 0 100 55' preserveAspectRatio='xMaxYMax'>
             <polyline
               fill='none'
               stroke='currentColor'
@@ -32,8 +34,8 @@ const AccordionItem = forwardRef<HTMLButtonElement, AccordionItemProps>((props, 
           </svg>
         </div>
       </button>
-      <div>
-        { children }
+      <div {...getContentProps()}>
+        { isDisabled ?? children }
       </div>
     </Element>
   )
