@@ -1,7 +1,7 @@
 @import './color.css';
 @import './radius.css';
 @import './spaces.css';
-@import './typography.module.css';
+@import './typography.css';
 
 .simplexui-themes {
   appearance: none;

@@ -7,15 +7,18 @@ export default [
   stylistic.configs['recommended-flat'],
   eslint.configs.recommended,
   {
-    files: ['**/*.ts', '**/*.js', '**/*.tsx', '**/*.jsx'],
+    files: [
+      'packages/**/*.{tsx,ts}',
+    ],
     ignores: ['*.json', 'node_modules', 'doc/**'],
-  },
-  {
     languageOptions: {
       parser: parser_ts,
       parserOptions: {
         ecmaVersion: 'latest',
         sourceType: 'module',
+        ecmaFeatures: {
+          jsx: true,
+        },
       },
     },
     plugins: {
@@ -39,6 +42,7 @@ export default [
       '@stylistic/quotes': 'warn',
       '@stylistic/jsx-quotes': ['warn', 'prefer-single'],
       '@stylistic/brace-style': ['error', '1tbs'],
+      '@stylistic/quote-props': 'off',
     },
   },
 ]

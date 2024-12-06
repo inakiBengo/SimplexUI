@@ -1,5 +1,7 @@
 export type As = React.ElementType
 
+type DataAttributes = Record<`data-${string}`, string>
+
 export type PropsOf<T extends As> = React.ComponentPropsWithoutRef<T>
 
 export type HTMLSimplexuiProps<T extends As = 'div', OmitKeys extends keyof PropsOf<T> = never > = Omit<
@@ -7,7 +9,7 @@ export type HTMLSimplexuiProps<T extends As = 'div', OmitKeys extends keyof Prop
   'ref' | 'size' | 'color' | 'defaultChecked' | 'defaultValue' | OmitKeys
 > & {
   as?: As
-}
+} & DataAttributes
 
 export namespace GenericStyles {
   export type Size = 'sm' | 'md' | 'lg'

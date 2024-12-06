@@ -4,12 +4,13 @@ import {
   type AccordionItemProps as SimplexAccordionItemProps,
 } from 'simplex_hook'
 
-import styles from './styles/AccordionItem.module.css'
+import './styles/AccordionItem.css'
 import { useCallback } from 'react'
 import { useAccordionContext } from './accordion_context'
 
-interface Props extends HTMLSimplexuiProps<'div'> {
-  ref?: ReactRef<HTMLButtonElement>
+export type AccordionItemRef = HTMLButtonElement | null
+interface Props extends HTMLSimplexuiProps<'div', 'title'> {
+  ref?: ReactRef<HTMLButtonElement | null>
   dark?: boolean
   title: string
   subtitle?: string
@@ -19,6 +20,7 @@ export type AccordionItemProps = Props & SimplexAccordionItemProps
 
 export function useAccordionItem(props: AccordionItemProps) {
   const context = useAccordionContext()
+  const { variant, classItem, split } = context
 
   const {
     as,
@@ -27,6 +29,7 @@ export function useAccordionItem(props: AccordionItemProps) {
     dark = false,
     subtitle,
     children,
+    className,
     ...otherProps
   } = props
 
@@ -34,56 +37,66 @@ export function useAccordionItem(props: AccordionItemProps) {
   const domRef = useDOMRef(ref)
 
   const {
-    headerProps,
+    baseProps,
+    buttonProps,
+    contentProps,
     isDisabled,
-    isFocused,
     isActive,
+    key,
   } = useSimplexAccordionItem(otherProps, context, domRef)
 
   /* Base */
   const baseClasses = classnames({
     dark: dark,
+    ['sx-accordionItem-' + variant]: split,
+    'sx-accordionItem-divider': !split,
   },
   'simplexui-themes',
-  styles.base,
+  'sx-accordionItem',
+  classItem,
+  className,
   )
 
   const getPropsBase = useCallback(() => ({
     'className': baseClasses,
     'data-active': isActive || undefined,
     'data-disabled': isDisabled || undefined,
-    'data-focused': isFocused || undefined,
+    id: key,
+    ...baseProps,
   }), [
     domRef,
     isActive,
-    isFocused,
     isDisabled,
+    baseClasses,
   ])
 
   /* header */
-  const headerClasses = classnames({
+  const buttonClasses = classnames({
   },
   'simplexui-themes',
-  styles.header,
+  'sx-accordionItem-header',
   )
 
-  const getHeaderProps = useCallback(() => ({
-    ...headerProps,
-    className: headerClasses,
+  const getButtonProps = useCallback(() => ({
+    ...buttonProps,
+    className: buttonClasses,
   }), [
-    headerProps,
-    headerClasses,
+    buttonProps,
+    buttonClasses,
     domRef,
   ])
 
   const contentClasses = classnames({},
     'simplexui-themes',
-    styles.content,
+    'sx-accordionItem-content',
   )
 
   const getContentProps = useCallback(() => ({
+    ...contentProps,
     className: contentClasses,
-  }), [])
+  }), [
+    isActive,
+  ])
 
   return {
     Element,
@@ -91,7 +104,7 @@ export function useAccordionItem(props: AccordionItemProps) {
     subtitle,
     children,
     getPropsBase,
-    getHeaderProps,
+    getButtonProps,
     getContentProps,
     isActive,
     isDisabled,

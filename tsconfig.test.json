@@ -1,0 +1,9 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "allowUnusedLabels": false,
+    "noUnusedLocals": false,
+    "types": ["jest", "@testing-library/jest-dom", "node"]
+  },
+  "include": ["**/__test__/*.test.ts", "**/*.test.ts"],
+}

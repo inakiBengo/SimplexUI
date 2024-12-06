@@ -17,7 +17,7 @@
   },
   "scripts": {
     "build": "rollup --config rollup.config.js",
-    "test": "npx jest"
+    "test": "npx jest Accordion/__test__/accordion.test.tsx"
   },
   "peerDependencies": {
     "react": "^18.3.1",
@@ -28,9 +28,10 @@
     "@types/react-dom": "^18.3.0"
   },
   "dependencies": {
+    "clsx": "^2.1.1",
     "core": "*",
-    "simplex_hook": "*",
     "react-aria": "^3.35.0",
-    "react-stately": "^3.33.0"
+    "react-stately": "^3.33.0",
+    "simplex_hook": "*"
   }
 }

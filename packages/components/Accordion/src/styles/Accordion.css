@@ -1,0 +1,27 @@
+.sx-accordion {
+  --accordion-bg: transparent;
+  --accordion-split: var(--space-2);
+  --accordion-decoration-color: var(--neutral-4);
+  --accordion-shadow: 0px 2px 5px #00000021;
+  --accordion-radius: var(--radius-none);
+}
+
+.sx-accordion {
+  display: grid;
+  background-color: var(--accordion-bg);
+  border-radius: var(--accordion-radius);
+}
+
+.sx-accordion-split {
+  gap: var(--accordion-split);
+  background-color: transparent;
+}
+
+.sx-accordion-shadow {
+  box-shadow: var(--accordion-shadow);
+  --accordion-bg: var(--neutral-2);
+}
+
+.sx-accordion-outlined {
+  border: var(--accordion-decoration-color) 2px solid;
+}

@@ -16,8 +16,9 @@
   "scripts": {
     "build": "npm run build --workspace=simplexui",
     "dev:doc": "npm run dev --workspace=doc",
-    "dev:sb": "npm run dev --workspace=@simplexui/storybook",
-    "test": "npm run test --workspace=simplexui"
+    "dev:ui": "npm run dev --workspace=@simplexui/storybook",
+    "test:ui": "npm run test --workspace=simplexui",
+    "test:hooks": "npm run test --workspace=simplex_hook"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
@@ -33,6 +34,7 @@
     "@stylistic/eslint-plugin": "^2.8.0",
     "@testing-library/jest-dom": "^6.5.0",
     "@testing-library/react": "^16.0.1",
+    "@testing-library/user-event": "^14.5.2",
     "@types/jest": "^29.5.13",
     "@typescript-eslint/eslint-plugin": "^8.8.0",
     "@typescript-eslint/parser": "^8.8.0",

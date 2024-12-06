@@ -1,0 +1,11 @@
+.sx-avatar {
+  width: 80px;
+  height: 80px;
+  display: block;
+  border-radius: 9999px;
+  overflow: hidden;
+
+  img {
+    width: 100%;
+  }
+}

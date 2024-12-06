@@ -1,8 +1,8 @@
 import { forwardRef } from 'react'
-import { useAccordion, AccordionProps } from './useAccordion'
+import { useAccordion, AccordionProps, AccordionRef } from './useAccordion'
 import { AccordionProvider } from './accordion_context'
 
-const Accordion = forwardRef<HTMLDivElement, AccordionProps>((props, ref) => {
+const Accordion = forwardRef<AccordionRef, AccordionProps>((props, ref) => {
   const {
     Element,
     domRef,

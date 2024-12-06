@@ -1,25 +1,26 @@
 import { useControllState } from '../useControllState/useControllState'
 import React from 'react'
-import type { ReactRef, Key } from '../types'
+import type { Key } from '../types'
+import type { RefAccordionItem } from './useAccordionItem'
 
 export interface AccordionState {
-  isActive: (key: Key) => boolean
   toToggle: (key: Key) => void
   generateKey: () => Key
-  register: (key: Key, ref: ReactRef<HTMLButtonElement>) => void
+  register: (key: Key, ref: RefAccordionItem) => void
   setFocus: (key: Key | null) => void
   readonly isDisabled: boolean
+  readonly isActive: (key: Key) => boolean
   readonly active: Set<Key>
   readonly keys: Key[]
   readonly focusedKey: Key | null
 }
 
 export interface AccordionProps {
-  active?: Key[]
+  active?: Set<Key>
   readonly defaultActive?: Key[]
   readonly disabled?: boolean
   readonly multiple?: boolean
-  onChange?: (keys: Set<Key>) => {}
+  onChange?: (keys: Set<Key>) => void
 }
 
 export default function useAccordion(props: AccordionProps) {
@@ -29,10 +30,11 @@ export default function useAccordion(props: AccordionProps) {
     onChange,
     multiple,
     disabled = false,
+    ...otherProps
   } = props
 
   // ** Data center ** //
-  const collection = React.useRef<Map<Key, ReactRef<HTMLButtonElement>>>(new Map())
+  const collection = React.useRef<Map<Key, RefAccordionItem>>(new Map())
   const keyList = React.useRef<Key[]>([])
   const [focusedKey, setFocusedKey] = React.useState<null | Key>(null)
   const [activeState, setActiveState] = useControllState(
@@ -49,7 +51,7 @@ export default function useAccordion(props: AccordionProps) {
     return 'simplex-' + id
   }, [])
 
-  const register = React.useCallback((key: Key, ref: ReactRef<HTMLButtonElement>) => {
+  const register = React.useCallback((key: Key, ref: RefAccordionItem) => {
     if (collection.current.has(key)) return
     collection.current.set(key, ref)
     keyList.current = Array.from(collection.current.keys())
@@ -83,7 +85,7 @@ export default function useAccordion(props: AccordionProps) {
   const isActive = React.useCallback((key: Key) => activeState.has(key), [activeState])
 
   // ** Focus control ** //
-  const setFocus = React.useCallback((key: Key | null, ref?: ReactRef<HTMLButtonElement>) => {
+  const setFocus = React.useCallback((key: Key | null, ref?: RefAccordionItem) => {
     setFocusedKey(key)
     if (!ref) return
     ref.current?.focus()
@@ -123,6 +125,7 @@ export default function useAccordion(props: AccordionProps) {
 
   const baseProps = {
     onKeyDown,
+    ...otherProps,
   }
 
   return {

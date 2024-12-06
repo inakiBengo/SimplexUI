@@ -21,7 +21,7 @@
     "declarationMap": true,                           /* Create sourcemaps for d.ts files. */
     "sourceMap": true,
     // "noEmit": true,                                   /* Disable emitting files from a compilation. */
-    "outDir": "build",                                   /* Specify an output folder for all emitted files. */
+    "outDir": "dist",                                   /* Specify an output folder for all emitted files. */
     "removeComments": true,                           /* Disable emitting comments. */
     // "noEmitOnError": true,                            /* Disable emitting files if any type checking errors are reported. */
 
@@ -44,13 +44,13 @@
     "noFallthroughCasesInSwitch": true,
     "noImplicitOverride": true,/*****/                        /* Ensure overriding members in derived classes are marked with an override modifier. */
     // "noPropertyAccessFromIndexSignature": true,       /* Enforces using indexed accessors for keys declared using an indexed type. */
-    // "allowUnusedLabels": true,                        /* Disable error reporting for unused labels. */
+    // "allowUnusedLabels": false,                        /* Disable error reporting for unused labels. */
     "allowUnreachableCode": true,/*****/                      /* Disable error reporting for unreachable code. */
 
     /* Completeness */
     "skipLibCheck": true,
     "isolatedModules": true, /** delete **/
-    "types": ["node", "jest", "@testing-library/jest-dom"]
+    "types": ["jest", "@testing-library/jest-dom", "node"]
   },
   "exclude": ["node_modules", "build"],
   "include": ["packages"]

@@ -11,7 +11,9 @@
   "publishConfig": {
     "access": "public"
   },
-  "scripts": {},
+  "scripts": {
+    "test": "npx jest --watch --onlyChanged"
+  },
   "peerDependencies": {
     "react": "^18.3.1",
     "@types/react": "^18.3.10",

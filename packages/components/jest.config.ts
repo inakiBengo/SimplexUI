@@ -3,6 +3,7 @@ import type { Config } from 'jest'
 const config: Config = {
   verbose: true,
   bail: true,
+  displayName: 'SIMPLEX_COMPONENTS',
   setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
   testEnvironment: 'jsdom',
   preset: 'ts-jest',

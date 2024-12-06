@@ -1,8 +1,7 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "outDir": "build",
+    "outDir": "dist",
   },
-  "include": ["index.ts", "global.d.ts", "**/*.tsx"],
-  "exclude": ["build"]
+  "include": ["index.ts", "global.d.ts", "**/*.tsx", "**/__test__/*.test.tsx", "**/*.test.tsx", "Avatar/src/index.ts"],
 }

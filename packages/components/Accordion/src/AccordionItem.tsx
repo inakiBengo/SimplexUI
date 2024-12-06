@@ -1,14 +1,14 @@
 import { forwardRef } from 'react'
-import { useAccordionItem, type AccordionItemProps } from './useAccordionItem'
-import styles from './styles/AccordionItem.module.css'
+import { useAccordionItem, type AccordionItemProps, AccordionItemRef } from './useAccordionItem'
+import './styles/AccordionItem.css'
 
-const AccordionItem = forwardRef<HTMLButtonElement, AccordionItemProps>((props, ref) => {
+const AccordionItem = forwardRef<AccordionItemRef, AccordionItemProps>((props, ref) => {
   const {
     Element,
     title,
     subtitle,
     children,
-    getHeaderProps,
+    getButtonProps,
     getPropsBase,
     getContentProps,
     isDisabled,
@@ -16,12 +16,12 @@ const AccordionItem = forwardRef<HTMLButtonElement, AccordionItemProps>((props, 
 
   return (
     <Element {...getPropsBase()}>
-      <button {...getHeaderProps()}>
-        <div className={styles.text}>
-          { title && <span className={styles.title}>{title}</span> }
-          { subtitle && <span className={styles.subtitle}>{subtitle}</span> }
-        </div>
-        <div className={styles.expandIcon}>
+      <button {...getButtonProps()}>
+        <span className='sx-accordionItem-text'>
+          { title && <h3 className='sx-accordionItem-title simplexui-themes'>{title}</h3> }
+          { subtitle && <span className='sx-accordionItem-subtitle simplexui-themes'>{subtitle}</span> }
+        </span>
+        <span className='sx-accordionItem-expandIcon'>
           <svg viewBox='0 0 100 55' preserveAspectRatio='xMaxYMax'>
             <polyline
               fill='none'
@@ -32,10 +32,10 @@ const AccordionItem = forwardRef<HTMLButtonElement, AccordionItemProps>((props, 
             >
             </polyline>
           </svg>
-        </div>
+        </span>
       </button>
       <div {...getContentProps()}>
-        { isDisabled ?? children }
+        { isDisabled ? null : children }
       </div>
     </Element>
   )
