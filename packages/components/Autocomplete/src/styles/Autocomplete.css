@@ -1,0 +1,108 @@
+.sx-autocomplete {
+  width: fit-content;
+  position: relative;
+}
+.sx-autocomplete-inputRoot {
+  display: flex;
+  align-items: center;
+}
+.sx-autocomplete-input {
+  border: none;
+  width: 100%;
+  background-color: transparent;
+  outline: none;
+  padding: 5px 10px;
+
+  border: solid var(--neutral-4) 2px;
+  border-radius: var(--radius-sm);
+  color: var(--neutral-9);
+  font-size: var(--font-size-100);
+  width: 200px;
+  position: relative;
+}
+.sx-autocomplete-label {
+  padding: 0 5px;
+  z-index: 99;
+  color: var(--neutral-5);
+  background-color: var(--neutral-1);
+  font-size: var(--font-size-100);
+  line-height: var(--line-height-100);
+  transition: all 0.15s ease-in-out;
+  position: absolute;
+  left: 5px;
+  user-select: none;
+}
+.sx-autocomplete-options {
+  box-shadow: 0 2px 5px var(--neutral-5-a);
+  position: absolute;
+  width: 100%;
+  overflow: hidden;
+  border-radius: var(--radius-sm);
+  top: 110%;
+  
+  .sx-autocomplete-option {
+    background-color: var(--neutral-3);
+    padding: 2px 5px;
+  }
+
+  .sx-autocomplete-option[data-focus] {
+    background-color: var(--neutral-4);
+  }
+  
+}
+.sx-autocomplete-clear-button {
+  width: 15px;
+  height: 15px;
+  padding: 4px;
+  border: none;
+  display: flex;
+  align-items: center;
+  color: var(--neutral-1);
+  cursor: pointer;
+  background-color:  var(--neutral-4);
+  position: absolute;
+  right: 5px;
+  border-radius: var(--radius-full);
+
+  display: none;
+}
+
+
+@media (hover:hover) {
+  .sx-autocomplete-inputRoot:hover {
+
+    .sx-autocomplete-clear-button {
+      display: flex;
+    }
+
+    .sx-autocomplete-input {
+      outline: var(--primary-3) solid 2px;
+      border-color: var(--primary-5);
+    }
+  }
+}
+
+.sx-autocomplete-inputRoot[data-focus] {
+  .sx-autocomplete-input {
+    outline: var(--primary-3) solid 2px;
+    border-color: var(--primary-5);
+  }
+
+  .sx-autocomplete-label {
+    font-size: var(--font-size-50);
+    line-height: 0.6rem;
+    transform: translateY(-20px);
+  }
+
+  .sx-autocomplete-clear-button {
+    display: flex;
+  }
+}
+.sx-autocomplete-inputRoot[data-value] {
+  
+  .sx-autocomplete-label {
+    transform: translateY(-20px);
+    font-size: var(--font-size-50);
+    line-height: 0.6rem;
+  }
+} 

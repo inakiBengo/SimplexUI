@@ -18,9 +18,7 @@ export function useControllState<T = {}>(controlledValue: T, defaultValue: T, on
   const setValue = React.useCallback((newValue: T) => {
     const onChangeCall = () => {
       if (currentChange) {
-        if (!Object.is(currentValue, newValue)) {
-          currentChange(newValue)
-        }
+        currentChange(newValue)
       }
       if (!isControlled) {
         value = newValue

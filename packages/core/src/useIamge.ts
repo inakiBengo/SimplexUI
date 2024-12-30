@@ -1,9 +1,9 @@
 import React from 'react'
 
 export interface ImageProps {
-  onLoad: (e: Event) => void
-  onError: (e: string | Event) => void
-  src: string
+  onLoad?: (e: Event) => void
+  onError?: (e: string | Event) => void
+  src?: string
 }
 
 export default function useImage(props: ImageProps) {
@@ -13,7 +13,7 @@ export default function useImage(props: ImageProps) {
     src,
   } = props
 
-  const [status, setStatus] = React.useState<'idle' | 'loading' | 'loaded' | 'error'>('idle')
+  const [status, setStatus] = React.useState<'idle' | 'loading' | 'loaded' | 'error'>('loading')
 
   React.useEffect(() => {
     if (!src) return setStatus('idle')

@@ -1,5 +1,5 @@
 import { classnames, GenericStyles, HTMLSimplexuiProps, ReactRef, useDOMRef } from 'core'
-import { useCallback, useEffect, useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
 import {
   useAccordion as useSimplexAccordion,
   AccordionProps as SimplexAccordionProps,

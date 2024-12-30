@@ -25,4 +25,7 @@ export namespace GenericStyles {
   }
 }
 
-export type ReactRef<T extends HTMLElement | null> = React.RefObject<T> | React.MutableRefObject<T> | React.Ref<T>
+export type ReactRef<T extends HTMLElement | null > = React.RefObject<T> | React.MutableRefObject<T> | React.Ref<T>
+export type RefObject<T> = { current: T }
+
+export type Key = string

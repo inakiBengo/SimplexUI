@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react'
-import { Avatar } from '../../index'
+import { Avatar, AvatarGroup } from '../../index'
 
 const config: Meta<typeof Avatar> = {
   component: Avatar,
@@ -7,10 +7,34 @@ const config: Meta<typeof Avatar> = {
 }
 export default config
 
-type Story = StoryObj<typeof Avatar>
-
-export const Default: Story = {
+export const Default: StoryObj<typeof Avatar> = {
   args: {
-    src: 'https://aguacatec.es/wp-content/uploads/2023/10/e5a978b8-6772-4c85-a50e-15581af7d483.png',
+    src: 'https://app.requestly.io/delay/5000/https://nextui.org/images/hero-card-complete.jpeg',
+    badge: {
+      value: '4',
+      color: 'primary',
+    },
+    size: 'lg',
+    radius: 'full',
+  },
+}
+
+const pepe = [1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6]
+
+export const Group: StoryObj<typeof AvatarGroup> = {
+  render: () => {
+    return (
+      <AvatarGroup size='lg' disabled>
+        {
+          pepe.map((value, index) => {
+            if (index > 2) return
+            return (
+              <Avatar key={index} fallback={value} />
+            )
+          })
+        }
+        <Avatar fallback={'+' + pepe.length} />
+      </AvatarGroup>
+    )
   },
 }

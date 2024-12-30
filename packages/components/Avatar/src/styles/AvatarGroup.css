@@ -1,0 +1,20 @@
+.sx-groupAccordion {
+  --avatar-size: 3rem;
+
+  display: grid;
+  grid-template-columns: repeat(auto-fit, calc(var(--avatar-size) / 1.5));
+}
+
+.sx-grouÁccordion-grid {
+  grid-template-columns: repeat(auto-fit, var(--avatar-size));
+}
+
+.sx-avatarGroup-size-sm {
+  --avatar-size: 2rem;
+}
+.sx-avatarGroup-size-md {
+  --avatar-size: 3rem;
+}
+.sx-avatarGroup-size-lg {
+  --avatar-size: 3.8rem;
+}

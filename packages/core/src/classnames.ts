@@ -1,5 +1,5 @@
 export function classnames(mix: { [key: string]: boolean | undefined }, ...styles: (string | undefined)[]) {
-  let str = ''
+  let str = 'simplexui-themes'
   for (let x in mix) {
     if (mix[x]) {
       str && (str += ' ')

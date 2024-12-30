@@ -5,32 +5,46 @@ import AvatarIcon from './AvatarIcon'
 const Avatar = forwardRef<AvatarRef, AvatarProps>((props, ref) => {
   const {
     Element,
-    imgProps,
+    getImgProps,
     getBaseProps,
+    getFallbackProps,
+    getBadgeProps,
     imageStatus,
     src,
+    isBadge,
+    badgeContent,
     fallback: fallbackComponent,
   } = useAvatar({ ...props, ref })
 
-  console.log(imageStatus)
-
   const fallback = useMemo(() => {
-    if (fallbackComponent) {
-      return (
-        <div>
-          { fallbackComponent }
-        </div>
-      )
-    }
-    return <AvatarIcon />
+    return (
+      <div {...getFallbackProps()}>
+        {
+          fallbackComponent
+            ? fallbackComponent
+            : <AvatarIcon />
+        }
+      </div>
+    )
   }, [src, imageStatus])
 
   return (
     <Element {...getBaseProps()}>
       {
         src && imageStatus === 'loaded'
-          ? <img {...imgProps()} />
-          : fallback
+          ? <img {...getImgProps()} />
+          : imageStatus === 'loading'
+            ? null
+            : fallback
+      }
+      {
+        isBadge
+          ? (
+              <span {...getBadgeProps()}>
+                { badgeContent }
+              </span>
+            )
+          : null
       }
     </Element>
   )
