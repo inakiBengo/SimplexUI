@@ -1,17 +1,12 @@
-import {Button} from 'simplexui'
+import { Input } from 'simplexui'
 import './App.css'
 
 function App() {
 
   return (
-    <>
-      <Button color='default'>
-        Hola mundo
-      </Button>
-      <Button color='secondary'>
-        Hola mundo
-      </Button>
-    </>
+    <div className='pepe'>
+      <Input helperText='No se aceptan caracteres especiales' labelText='Username'/>
+    </div>
   )
 }
 

@@ -1,6 +1,4 @@
 import { Key } from 'core'
-import React from 'react'
-type Option = string | object
 
 export interface AutocompleteProps<T extends object | string> {
   /* Controlled state */

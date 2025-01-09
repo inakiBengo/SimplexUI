@@ -1,0 +1,163 @@
+.sx-textField-root {
+  --textField-text-color: var(--neutral-10);
+
+  --textField-color-decoration: var(--neutral-8);
+  --textField-color-focus: var(--primary-5);
+  --textField-color-invalid: var(--error-5);
+
+  --textField-bg-color: transparent;
+  --textField-bg-color-hover: transparent;
+  --textField-bg-color-focus: transparent;
+  --textField-bg-color-invalid: transparent;
+
+  --textField-border-width: 2px;
+  --textField-border-radius: var(--radius-md);
+  --textField-border-style: solid;
+  --textField-border-color: var(--neutral-5);
+  --textField-border-color-hover: var(--neutral-6);
+  --textField-border-color-focus: var(--primary-5);
+  --textField-border-color-invalid: var(--error-5);
+
+  --textField-font-size: var(--font-size-100);
+  --textField-line-height: var(--line-height-100);
+  --textField-extra-font-size: var(--font-size-50);
+  --textField-extra-line-height: var(--line-height-50);
+
+  --textField-width: 25ch;
+  --textField-height: 1.8em;
+  --textField-padding-y: 0;
+  --textField-padding-x: var(--space-2);
+
+  --textField-transition-duration: .2s;
+}
+
+.sx-textField-root {
+  width: var(--textField-width);
+  height: var(--textField-height);
+  margin-top: 1.3rem;
+
+  .sx-textField-wrapper {
+    border-color: var(--textField-border-color);
+    border-width: var(--textField-border-width);
+    border-style: var(--textField-border-style);
+    border-radius: var(--textField-border-radius);
+    background-color: var(--textField-bg-color);
+    padding: var(--textField-padding-y) var(--textField-padding-x);
+    display: flex;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    position: relative;
+    transition: border-color 0.15s ease-in-out, background-color 0.15s ease-in-out;
+    box-sizing: border-box;
+
+    .sx-textField-label {
+      color: var(--textField-color-decoration);
+      font-size: var(--textField-font-size);
+      line-height: var(--textField-line-height);
+      left:var(--textField-padding-x);
+      transition: top var(--textField-transition-duration) ease-in-out, font-size var(--textField-transition-duration) ease-in-out;
+      position: absolute;
+      text-wrap: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      width: fit-content;
+      cursor: text;
+      user-select: none;
+      /* The "top" value overrides "translateY" so that CSS knows it is centered and can animate it. */
+      top: 50%;
+      transform: translateY(-50%);
+    }
+    
+    .sx-textField-input {
+
+      font-size: var(--textField-font-size);
+      line-height: var(--textField-line-height);
+      outline-width: var(--textField-outlined-width);
+      outline-color: var(--textField-outlined-color);
+      outline-style: var(--textField-outlined-style);
+      color: var(--textField-text-color);
+      width: 100%;
+      height: 100%;
+      border-radius: calc(var(--textField-border-radius) / 1.5);
+      border: none;
+      outline-offset: 2px;
+      background-color: transparent;
+    }
+  }
+
+  .sx-textField-helper {
+    color: var(--textField-color-decoration);
+    font-size: var(--textField-extra-font-size);
+    line-height: var(--textField-extra-line-height);
+    margin: 0.2rem 0;
+    padding: 0 var(--textField-padding-x);
+  }
+
+  @media (hover:hover) {
+    .sx-textField-wrapper:hover {
+      border-color: var(--textField-border-color-hover);
+      background-color: var(--textField-bg-color-hover);
+    }
+  }
+
+  &[data-focused] {
+    .sx-textField-wrapper {
+      border-color: var(--textField-border-color-focus);
+      background-color: var(--textField-bg-color-focus);
+  
+      .sx-textField-label {
+        color: var(--textField-color-focus);
+        font-size: var(--textField-extra-font-size);
+        line-height: var(--textField-extra-line-height);
+        top: -12px;
+        cursor: default;
+      }
+    }
+  }
+
+  &[data-filled] {
+    --textField-label-font-size: var(--textField-label-font-size-focus-filled);
+    --textField-label-line-height: var(--textField-label-line-height-focus-filled);
+  
+    .sx-textField-label {
+      font-size: var(--textField-extra-font-size);
+      line-height: var(--textField-extra-line-height);
+      top: -12px;
+      cursor: default;
+    }
+  }
+
+  &[data-invalid] {
+    .sx-textField-wrapper {
+      background-color: var(--textField-bg-color-invalid);
+      border-color: var(--textField-border-color-invalid);
+
+      .sx-textField-label {
+        color: var(--textField-color-invalid);
+      }
+    }
+    .sx-textField-helper {
+      color: var(--textField-color-invalid);
+    }
+  }
+}
+
+.sx-textField-light {
+  --textField-border-radius: 0;
+
+  .sx-textField-wrapper {
+    border-width: 0 0 var(--textField-border-width) 0;
+  }
+}
+
+.sx-textField-filled {
+  --textField-bg-color: var(--neutral-3);
+  --textField-bg-color-hover: var(--neutral-4);
+  --textField-bg-color-focus: var(--neutral-5);
+  --textField-bg-color-invalid: var(--neutral-3);
+
+  .sx-textField-wrapper {
+    border: none;
+  }
+}

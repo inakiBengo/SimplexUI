@@ -1,12 +1,5 @@
+@import './reset.css';
 @import './color.css';
 @import './radius.css';
 @import './spaces.css';
 @import './typography.css';
-
-.simplexui-themes {
-  appearance: none;
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}

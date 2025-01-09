@@ -1,49 +1,46 @@
-import { nodeResolve } from '@rollup/plugin-node-resolve'
+import resolve from '@rollup/plugin-node-resolve'
 import commonjs from '@rollup/plugin-commonjs'
 import typescript from '@rollup/plugin-typescript'
 import babel from '@rollup/plugin-babel'
 import postcss from 'rollup-plugin-postcss'
+import postcssImport from 'postcss-import'
 
-import packageJson from './package.json' assert { type: 'json' }
+// import packageJson from './package.json'
 
 export default [
   {
     input: 'index.ts',
     output: [
       {
-        file: packageJson.main,
-        format: 'umd',
-        sourcemap: true,
+        file: 'dist/simplexui.es.js',
+        format: 'es',
         name: 'simplexui',
         globals: {
-          'react': 'React',
+          react: 'React',
           'react-dom': 'ReactDOM',
+          core: 'core',
+          simplex_hook: 'simplex_hook',
         },
-      },
-      {
-        file: packageJson.module,
-        format: 'esm',
         sourcemap: true,
-        name: 'simplexui',
-        globals: {
-          'react': 'React',
-          'react-dom': 'ReactDOM',
-        },
       },
     ],
-    external: ['react', 'react-dom', '@simplexui/core'],
+    external: ['react', 'react-dom', 'react-aria', 'clsx', 'react-stately'],
     plugins: [
-      nodeResolve(),
       postcss({
-        modules: true,
+        plugins: [postcssImport()],
+        minimize: false,
         inject: true,
-        minimize: true,
       }),
-      commonjs(),
+      resolve({
+        extensions: ['.js', '.ts', '.tsx', '.css'],
+      }),
       typescript({
         tsconfig: './tsconfig.json',
+        exclude: ['./Autocomplete/**', './Accordion/**'],
       }),
       babel({
+        babelHelpers: 'bundled',
+        babelrc: false,
         exclude: /node_modules/,
         extensions: ['.ts', '.tsx'],
         presets: [
@@ -51,8 +48,8 @@ export default [
           ['@babel/preset-react', { runtime: 'automatic' }],
           '@babel/preset-typescript',
         ],
-        babelHelpers: 'bundled',
       }),
+      commonjs(),
     ],
   },
 ]

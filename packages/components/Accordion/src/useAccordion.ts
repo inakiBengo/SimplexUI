@@ -1,4 +1,4 @@
-import { classnames, GenericStyles, HTMLSimplexuiProps, ReactRef, useDOMRef } from 'core'
+import { classnames, useDOMRef, type GenericStyles, type HTMLSimplexuiProps, type ReactRef } from 'core'
 import { useCallback, useMemo } from 'react'
 import {
   useAccordion as useSimplexAccordion,

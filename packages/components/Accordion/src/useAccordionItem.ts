@@ -1,4 +1,4 @@
-import { classnames, HTMLSimplexuiProps, ReactRef, useDOMRef } from 'core'
+import { classnames, useDOMRef, type HTMLSimplexuiProps, type ReactRef } from 'core'
 import {
   useAccordionItem as useSimplexAccordionItem,
   type AccordionItemProps as SimplexAccordionItemProps,

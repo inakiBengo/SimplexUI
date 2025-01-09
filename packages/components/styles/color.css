@@ -3,13 +3,14 @@
 
   --neutral-1: #FFFFFF;
   --neutral-2: #F7F7F7;
-  --neutral-3: #EDEDED;
-  --neutral-4: #B3B3B3;
-  --neutral-5: #8c8c8c;
-  --neutral-6: #808080;
-  --neutral-7: #737373;
-  --neutral-8: #303030;
-  --neutral-9: #0E0E0E;
+  --neutral-3: #ededed;
+  --neutral-4: #e6e6e6;
+  --neutral-5: #b3b3b3;
+  --neutral-6: #8c8c8c;
+  --neutral-7: #808080;
+  --neutral-8: hsl(0, 0%, 40%);
+  --neutral-9: #303030;
+  --neutral-10: #0E0E0E;
   --neutral-5-a: #8c8c8c59;
   --neutral-6-a: #6e6e6e4d;
   --neutral-7-a: #61616161;

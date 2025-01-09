@@ -6,7 +6,7 @@ export type PropsOf<T extends As> = React.ComponentPropsWithoutRef<T>
 
 export type HTMLSimplexuiProps<T extends As = 'div', OmitKeys extends keyof PropsOf<T> = never > = Omit<
   PropsOf<T>,
-  'ref' | 'size' | 'color' | 'defaultChecked' | 'defaultValue' | OmitKeys
+  'ref' | 'size' | 'color' | 'defaultChecked' | OmitKeys
 > & {
   as?: As
 } & DataAttributes

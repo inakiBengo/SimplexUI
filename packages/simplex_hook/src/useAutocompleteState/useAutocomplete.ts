@@ -70,11 +70,13 @@ export default function useAutocomplete<Value extends object | string>(props: Au
         e.preventDefault()
         setIsOpen(true)
         if (!highlightedKey) {
-          newHighlightedKey = getKey(filteredOptions[0])
+          const firstOption = filteredOptions[0]
+          newHighlightedKey = firstOption ? getKey(firstOption) : ''
         } else {
           const keyList = filteredOptions.map(value => getKey(value))
           const currentIndex = keyList.indexOf(highlightedKey)
-          newHighlightedKey = keyList[(currentIndex + 1) % keyList.length]
+          const nextKey = keyList[(currentIndex + 1) % keyList.length]
+          newHighlightedKey = nextKey ?? ''
         }
         setHighlightedKey(newHighlightedKey)
         break
@@ -83,11 +85,13 @@ export default function useAutocomplete<Value extends object | string>(props: Au
         e.preventDefault()
         setIsOpen(true)
         if (!highlightedKey) {
-          newHighlightedKey = getKey(filteredOptions[filteredOptions.length - 1])
+          const lastOption = filteredOptions[filteredOptions.length - 1]
+          newHighlightedKey = lastOption ? getKey(lastOption) : ''
         } else {
           const keyList = filteredOptions.map(value => getKey(value))
           const currentIndex = keyList.indexOf(highlightedKey)
-          newHighlightedKey = keyList[(currentIndex - 1 + keyList.length) % keyList.length]
+          const prevKey = keyList[(currentIndex - 1 + keyList.length) % keyList.length]
+          newHighlightedKey = prevKey ?? ''
         }
         setHighlightedKey(newHighlightedKey)
         break

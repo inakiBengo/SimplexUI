@@ -18,7 +18,6 @@ export const Default: Story = {
         <Autocomplete
           options={options}
           getLabel={option => option.title}
-          label='Nombres'
         />
       </>
     )

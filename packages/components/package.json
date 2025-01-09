@@ -5,8 +5,9 @@
   "keywords": [
     "Button"
   ],
-  "main": "./build/index.js",
-  "module": "./build/index.es.js",
+  "main": "./dist/simplexui.js",
+  "module": "./dist/simplexui.es.js",
+  "styles": "./dist/styles.css",
   "license": "MIT",
   "type": "module",
   "files": [
@@ -28,10 +29,7 @@
     "@types/react-dom": "^18.3.0"
   },
   "dependencies": {
-    "clsx": "^2.1.1",
     "core": "*",
-    "react-aria": "^3.35.0",
-    "react-stately": "^3.33.0",
     "simplex_hook": "*"
   }
 }

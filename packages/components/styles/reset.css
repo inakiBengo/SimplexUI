@@ -1,0 +1,27 @@
+.sx-reset {
+  &:where(
+    textarea,
+    input:not(
+      /* Buttons */
+      [type='button'],
+      [type='image'],
+      [type='reset'],
+      [type='submit'],
+
+      /* Non-textual inputs */
+      [type='checkbox'],
+      [type='color'],
+      [type='radio'],
+      [type='range']
+    )
+  ) {
+    display: inline-block;
+    box-sizing: border-box;
+    cursor: text;
+  }
+
+  &:where(p) {
+    margin: 0;
+    padding: 0;
+  }
+}

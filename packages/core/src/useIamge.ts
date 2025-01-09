@@ -6,7 +6,7 @@ export interface ImageProps {
   src?: string
 }
 
-export default function useImage(props: ImageProps) {
+export function useImage(props: ImageProps) {
   const {
     onLoad,
     onError,

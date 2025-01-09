@@ -14,7 +14,7 @@ const defaultGetKey = (value: string | object) => (
       : undefined
 )
 
-export function createCollectionManager<T extends string | object>(collection: T[], config: Config<T>) {
+export function createCollectionManager<T extends string | object >(collection: T[], config: Config<T>) {
   const {
     loop = true,
   } = config
@@ -46,11 +46,15 @@ export function createCollectionManager<T extends string | object>(collection: T
   }
 
   const firstKey = () => {
-    return getKey(collection[0])
+    const value = collection[0]
+    if (!value) return false
+    return getKey(value)
   }
 
   const lastKey = () => {
-    return getKey(collection[collection.length - 1])
+    const value = collection[collection.length - 1]
+    if (!value) return false
+    return getKey(value)
   }
 
   const nextKey = (key: string) => {

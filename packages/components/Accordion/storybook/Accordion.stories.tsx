@@ -15,7 +15,7 @@ export const Default: Story = {
   render: (args) => {
     const title = 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellat ullam nemo, facere et dicta expedita, nostrum molestiae nihil rem molestias, exercitationem enim debitis voluptate iste eum dolorum odio sunt ipsa!'
     return (
-      <Accordion {...args} variant='shadow' split className='base' defaultActive={['0']}>
+      <Accordion {...args} variant='outlined' className='base' defaultActive={['0']}>
         <AccordionItem title='Accordion 1' subtitle='Subtitle accordion 1' itemKey='0'>
           <p>{ title }</p>
         </AccordionItem>

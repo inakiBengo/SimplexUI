@@ -8,12 +8,16 @@ import './styles/Autocomplete.css'
 
 export type RefAutocomplete = HTMLInputElement | null
 export interface AutocompleteProps<Value extends object | string>
-  extends HTMLSimplexuiProps<'input', 'onChange' | 'value' | 'onSelect' | 'onFocus' | 'onBlur'>,
+  extends HTMLSimplexuiProps<'input', 'onChange' | 'onSelect'>,
   SimplexProps<Value> {
   ref?: ReactRef<RefAutocomplete>
   disableClear?: boolean
   placeholder?: string
   label?: string
+  /* delete */
+  onChange?: (key: string) => void
+  onSelect?: (label: string, option: Value | undefined) => void
+  /* delete */
   renderRoot?: (
     rootProps: React.HTMLAttributes<HTMLElement>,
     inputProps: React.HTMLAttributes<HTMLInputElement>,

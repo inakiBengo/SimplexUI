@@ -7,7 +7,7 @@
   "license": "MIT",
   "type": "module",
   "main": "src/index.ts",
-  "module": "src/index.es.ts",
+  "module": "src/index.ts",
   "publishConfig": {
     "access": "public"
   },

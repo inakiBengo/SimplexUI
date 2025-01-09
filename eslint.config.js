@@ -9,6 +9,7 @@ export default [
   {
     files: [
       'packages/**/*.{tsx,ts}',
+      'packages/**',
     ],
     ignores: ['*.json', 'node_modules', 'doc/**'],
     languageOptions: {

@@ -1,7 +1,12 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
+    "composite": true,
+    "noEmit": false,
+    "emitDeclarationOnly": true,
     "outDir": "dist",
+    "rootDir": ".",
   },
-  "include": ["index.ts", "global.d.ts", "**/*.tsx", "**/__test__/*.test.tsx", "**/*.test.tsx", "Avatar/src/index.ts"],
+  "exclude": ["dist", "node_modules", "**/__test__/*.test.ts", "**/storybook/*.stories.tsx"],
+  "include": ["./**/**/*.ts", "./**/**/*.tsx"],
 }
