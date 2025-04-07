@@ -1,43 +1,28 @@
 import { forwardRef } from 'react'
-import { useAutocomplete, type AutocompleteProps } from './useAutocomplete'
+import { useAutocomplete, type useAutocompleteProps } from './useAutocomplete'
+import { Input } from '../../Input/src/index'
 
 const Autocomplete = forwardRef((props, ref) => {
   const {
     Element,
     filteredOptions,
     getLabel = (option: { label?: string } | string) => typeof option === 'string' ? option : option?.label,
-    label,
-    value,
     disableClear,
-    getWrapperProps,
-    getLabelProps,
-    getInputRootProps,
-    getInputProps,
-    getOptionsProps,
-    getOptionProps,
     getClearButtonProps,
-    renderRoot,
-    renderOption,
+    getRootProps,
+    getInputProps,
+    getListOptionsProps,
+    getOptionProps,
   } = useAutocomplete({ ...props, ref })
 
-  const renderedRoot = () => {
-    return renderRoot
-      ? renderRoot(
-        { ...getInputRootProps(), className: '' },
-        { ...getInputProps(), className: '' },
-        { ...getClearButtonProps(), className: '' })
-      : (
-          <div {...getInputRootProps()}>
-            { label
-              ? (
-                  <label {...getLabelProps()}>
-                    { label }
-                  </label>
-                )
-              : null}
-            <input {...getInputProps()} type='text' autoComplete='off' />
-            { value && !disableClear
-              ? (
+  return (
+    <>
+      <Element {...getRootProps()}>
+        <Input
+          suffix={() => (
+            disableClear
+              ? null
+              : (
                   <button {...getClearButtonProps()}>
                     <svg viewBox='0 0 100,100' strokeWidth='15' strokeLinecap='round'>
                       <polyline points='10,10 90,90' fill='none' stroke='currentColor' />
@@ -45,39 +30,23 @@ const Autocomplete = forwardRef((props, ref) => {
                     </svg>
                   </button>
                 )
-              : null }
-          </div>
-        )
-  }
-
-  const renderedOption = () => {
-    return renderOption
-      ? filteredOptions.map((option, index) => {
-        const label = getLabel(option)
-        if (!label) return
-        return renderOption({ ...getOptionProps(label), className: '' }, option, index)
-      })
-      : filteredOptions.map((option) => {
-        const label = getLabel(option)
-        if (!label) return
-        return (
-          <li key={label} {...getOptionProps(label)}>
-            { label }
-          </li>
-        )
-      })
-  }
-
-  return (
-    <>
-      <Element {...getWrapperProps()}>
-        { renderedRoot() }
+          )}
+          {...getInputProps()}
+        />
         {
           filteredOptions.length > 0
             ? (
-                <ul {...getOptionsProps()}>
+                <ul {...getListOptionsProps()}>
                   {
-                    renderedOption()
+                    filteredOptions.map((option, index) => {
+                      const label = getLabel(option)
+                      if (!label) return
+                      return (
+                        <li key={index} {...getOptionProps(index)}>
+                          { label }
+                        </li>
+                      )
+                    })
                   }
                 </ul>
               )
@@ -90,7 +59,7 @@ const Autocomplete = forwardRef((props, ref) => {
 
 interface AutocompleComponent {
   <T extends object | string>(
-    props: AutocompleteProps<T>,
+    props: useAutocompleteProps<T>,
   ): React.ReactElement
   displayName: string
 }

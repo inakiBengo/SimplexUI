@@ -1,108 +1,131 @@
 .sx-autocomplete {
+  --TextField-height: 36px;
+  --TextField-radius: var(--radius-md);
+  --Autocomplete-option-height: 1.8rem;
+
+  background-color: transparent;
   width: fit-content;
   position: relative;
-}
-.sx-autocomplete-inputRoot {
-  display: flex;
-  align-items: center;
-}
-.sx-autocomplete-input {
-  border: none;
-  width: 100%;
-  background-color: transparent;
-  outline: none;
-  padding: 5px 10px;
-
-  border: solid var(--neutral-4) 2px;
-  border-radius: var(--radius-sm);
-  color: var(--neutral-9);
-  font-size: var(--font-size-100);
-  width: 200px;
-  position: relative;
-}
-.sx-autocomplete-label {
-  padding: 0 5px;
-  z-index: 99;
-  color: var(--neutral-5);
-  background-color: var(--neutral-1);
-  font-size: var(--font-size-100);
-  line-height: var(--line-height-100);
-  transition: all 0.15s ease-in-out;
-  position: absolute;
-  left: 5px;
-  user-select: none;
-}
-.sx-autocomplete-options {
-  box-shadow: 0 2px 5px var(--neutral-5-a);
-  position: absolute;
-  width: 100%;
-  overflow: hidden;
-  border-radius: var(--radius-sm);
-  top: 110%;
   
-  .sx-autocomplete-option {
-    background-color: var(--neutral-3);
-    padding: 2px 5px;
-  }
+  .sx-autocomplete-list {
+    background-color: var(--color-gray-100);
+    top: var(--TextField-height);
+    border-radius: var(--TextField-radius);
+    min-height: var(--Autocomplete-option-height);
+    max-height: calc(6 * var(--Autocomplete-option-height));
+    box-shadow: 0 0.2rem 8px 1px var(--color-gray-a);
+    overflow-x: hidden;
+    overflow-y: auto;
+    position: absolute;
+    z-index: 101;
+    width: 100%;
+    margin-top: 5px;
 
-  .sx-autocomplete-option[data-focus] {
-    background-color: var(--neutral-4);
+    .sx-autocomplete-option {
+      padding: 0 0.5rem;
+      cursor: pointer;
+      user-select: none;
+      height: var(--Autocomplete-option-height);
+      display: flex;
+      align-items: center;
+      font-size: var(--font-size-100);
+      line-height: var(--line-height-100);
+
+      &[data-select] {
+        background-color: var(--color-gray-200);
+      }
+    }
+
+    &::-webkit-scrollbar {
+      background-color: transparent;
+      width: 6px;
+      display: none;
+    }
+    &::-webkit-scrollbar-thumb {
+      background-color: var(--color-gray-500);
+      border-radius: var(--TextField-radius);
+    }
+    &::-webkit-scrollbar-track {
+      background-color: var(--color-gray-200);
+      border-radius: var(--TextField-radius);
+    }
   }
   
-}
-.sx-autocomplete-clear-button {
-  width: 15px;
-  height: 15px;
-  padding: 4px;
-  border: none;
-  display: flex;
-  align-items: center;
-  color: var(--neutral-1);
-  cursor: pointer;
-  background-color:  var(--neutral-4);
-  position: absolute;
-  right: 5px;
-  border-radius: var(--radius-full);
+  .sx-autocomplete-clearButton {
+    visibility: hidden;
+    display: grid;
+    place-content: center;
+    background-color: var(--color-gray-300);
+    border-radius: var(--radius-full);
+    padding: 3px;
+    border: none;
+    width: 0.8rem;
+    height: 0.8rem;
+    cursor: pointer;
 
-  display: none;
-}
+    svg {
+      width: 100%;
+      height: 100%;
+      color: var(--color-gray-50);
+    }
+  }
 
+  &:where([data-popup-up]) {
+    .sx-autocomplete-list {
+      top: auto;
+      bottom: 110%;
+    }
+  }
+}
 
 @media (hover:hover) {
-  .sx-autocomplete-inputRoot:hover {
-
-    .sx-autocomplete-clear-button {
-      display: flex;
+  .sx-autocomplete:has(
+    .sx-textField[data-filled] .sx-textField-input:hover, 
+    .sx-textField[data-filled] .sx-textField-suffix:hover ) {
+    .sx-autocomplete-clearButton {
+      visibility: visible;
     }
-
-    .sx-autocomplete-input {
-      outline: var(--primary-3) solid 2px;
-      border-color: var(--primary-5);
+  }
+  .sx-autocomplete:has(.sx-textField[data-focused][data-filled]) {
+    .sx-autocomplete-clearButton {
+      visibility: visible;
     }
+  }
+  .sx-autocomplete-clearButton:hover {
+    visibility: visible;
+  }
+  .sx-autocomplete-list:hover::-webkit-scrollbar {
+    display: block;
   }
 }
 
-.sx-autocomplete-inputRoot[data-focus] {
-  .sx-autocomplete-input {
-    outline: var(--primary-3) solid 2px;
-    border-color: var(--primary-5);
-  }
 
-  .sx-autocomplete-label {
-    font-size: var(--font-size-50);
-    line-height: 0.6rem;
-    transform: translateY(-20px);
-  }
-
-  .sx-autocomplete-clear-button {
-    display: flex;
-  }
+/*** connection with textField variables ***/
+.sx-autocomplete:has(.sx-textField.sx-size-sm) {
+  --TextField-height: 28px;
 }
-.sx-autocomplete-inputRoot[data-value] {
-  
-  .sx-autocomplete-label {
-    transform: translateY(-20px);
-    font-size: var(--font-size-50);
-    line-height: 0.6rem;
-  }
-} 
+.sx-autocomplete:has(.sx-textField.sx-size-md) {
+  --TextField-height: 36px;
+}
+.sx-autocomplete:has(.sx-textField.sx-size-lg) {
+  --TextField-height: 42px;
+}
+/*** radius ***/
+.sx-autocomplete:has(.sx-radius-none) {
+  --TextField-radius: none;
+}
+.sx-autocomplete:has(.sx-radius-sm) {
+  --TextField-radius: var(--radius-sm);
+}
+.sx-autocomplete:has(.sx-radius-md) {
+  --TextField-radius: var(--radius-md);
+}
+.sx-autocomplete:has(.sx-radius-lg) {
+  --TextField-radius: var(--radius-lg);
+}
+.sx-autocomplete:has(.sx-radius-xl) {
+  --TextField-radius: var(--radius-xl);
+}
+.sx-autocomplete:has(.sx-radius-full) {
+  --TextField-radius: var(--radius-full);
+}

@@ -2,19 +2,16 @@ import { useId } from 'core'
 import React from 'react'
 import { InputProps } from './types'
 
-export default function useInput(props: InputProps) {
+export default function useInput(props: InputProps, ref: React.RefObject<HTMLInputElement>) {
   const {
     helperText,
-    onFocus,
-    onBlur,
-    onClick,
-    invalid = false,
+    errorMessage = ref.current?.validationMessage || '',
+    invalid = ref.current?.checkValidity ? !ref.current?.checkValidity() : false,
     disabled = false,
     required = false,
     placeholder,
     value,
     defaultValue,
-    ref,
     type = 'text',
     autoComplete = 'off',
   } = props
@@ -22,38 +19,43 @@ export default function useInput(props: InputProps) {
   const idLabel = useId()
   const idInput = useId()
   const idHelper = useId()
-  const inputRef = ref || React.useRef<HTMLInputElement | null>(null)
   const [isFocused, setIsFocused] = React.useState(false)
-  const isFilled = Boolean(
-    inputRef.current?.value
-    || placeholder
-    || ['color', 'date', 'datetime-local', 'file', 'image', 'month',
-      'range', 'reset', 'submit', 'time', 'week'].includes(type))
+  const [isFilled, setIsFilled] = React.useState(false)
+
+  React.useEffect(() => {
+    setIsFilled(Boolean(
+      ref.current?.value
+      || placeholder
+      || ['color', 'date', 'datetime-local', 'file', 'image', 'month',
+        'range', 'reset', 'submit', 'time', 'week'].includes(type)))
+  }
+  , [ref.current?.value, value, defaultValue, placeholder, type])
 
   const handlerFocus = React.useCallback((e: React.FocusEvent<HTMLInputElement>) => {
     setIsFocused(true)
-    onFocus?.(e)
-  }, [])
+    props.onFocus?.(e)
+  }, [ref])
 
   const handlerBlur = React.useCallback((e: React.FocusEvent<HTMLInputElement>) => {
     setIsFocused(false)
-    onBlur?.(e)
-  }, [])
+    props.onBlur?.(e)
+  }, [ref.current?.value])
 
-  const handlerClick = React.useCallback((e: React.MouseEvent<HTMLInputElement>) => {
-    onClick?.(e)
-  }, [])
+  const handlerChange = React.useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setIsFilled(Boolean(ref.current?.value))
+    props.onChange?.(e)
+  }, [ref.current?.value])
 
   return {
     rootProps: {
-      onClick: handlerClick,
+      onChange: handlerChange,
     },
     labelProps: {
       id: idLabel,
       htmlFor: idInput,
     },
     inputProps: {
-      ref: inputRef,
+      ref,
       onFocus: handlerFocus,
       onBlur: handlerBlur,
       placeholder,
@@ -76,5 +78,6 @@ export default function useInput(props: InputProps) {
     isFilled,
     isDisabled: disabled,
     isInvalid: invalid,
+    errorMessage,
   }
 }

@@ -1,31 +1,34 @@
-import './styles/Input.css'
-import { classnames, HTMLSimplexuiProps, ReactRef, useDOMRef } from 'core'
-import { ReactNode, useCallback } from 'react'
+import { classnames, HTMLSimplexuiProps, useDOMRef } from 'core'
+import { ForwardedRef, ReactNode, useCallback } from 'react'
 import {
   useInput as useSimplexInput,
+  InputProps,
 } from 'simplex_hook'
 
-export interface InputProps extends HTMLSimplexuiProps<'input'> {
-  ref?: ReactRef<HTMLInputElement | null>
-  invalid?: boolean
+export interface Props extends HTMLSimplexuiProps<'input'> {
+  ref?: ForwardedRef<HTMLInputElement>
   helperText?: string
   labelText?: string
   startContent?: ReactNode | (() => ReactNode)
   endContent?: ReactNode | (() => ReactNode)
   variant?: 'light' | 'outline' | 'filled'
+  size?: 'sm' | 'md' | 'lg'
+  radius?: 'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full'
+  prefix?: ReactNode | (() => ReactNode)
+  suffix?: ReactNode | (() => ReactNode)
 }
 
-export const useInput = (props: InputProps) => {
+export type useInputProps = Props & InputProps
+
+export const useInput = (props: useInputProps) => {
   const {
     as,
     ref,
     onFocus,
     onBlur,
-    onClick,
     readOnly,
     invalid,
     disabled,
-    required,
     placeholder,
     value,
     defaultValue,
@@ -35,6 +38,13 @@ export const useInput = (props: InputProps) => {
     startContent,
     endContent,
     variant = 'outline',
+    size = 'md',
+    radius = 'md',
+    autoComplete,
+    prefix,
+    suffix,
+    className,
+    errorMessage: userMessageError,
     ...other
   } = props
 
@@ -50,24 +60,27 @@ export const useInput = (props: InputProps) => {
     isFilled,
     isFocused,
     isInvalid,
+    errorMessage,
   } = useSimplexInput({
-    ref: domRef,
     onFocus,
     onBlur,
-    onClick,
     readOnly,
     invalid,
     disabled,
-    required,
     placeholder,
     value,
     defaultValue,
     type,
-  })
+    autoComplete,
+    errorMessage: userMessageError,
+  }, domRef)
 
   const rootClasses = classnames({},
-    'sx-textField-' + variant,
-    'sx-textField-root',
+    'sx-variant-' + variant,
+    'sx-size-' + size,
+    'sx-radius-' + radius,
+    'sx-textField',
+    className,
   )
 
   const getRootProps = useCallback(() => ({
@@ -76,8 +89,8 @@ export const useInput = (props: InputProps) => {
     'data-disabled': isDisabled || undefined,
     'data-focused': isFocused || undefined,
     'data-invalid': isInvalid || undefined,
-    'data-filled': isFilled || Boolean(startContent) || undefined,
-  }), [rootProps])
+    'data-filled': isFilled || Boolean(startContent) || Boolean(prefix) || undefined,
+  }), [rootProps, isFilled, isInvalid, isFocused, isDisabled, startContent, prefix])
 
   const getLabelProps = useCallback(() => ({
     ...labelProps,
@@ -89,15 +102,22 @@ export const useInput = (props: InputProps) => {
   }), [])
 
   const getInputProps = useCallback(() => ({
-    ...other,
     ...inputProps,
+    ...other,
     className: 'simplexui-themes sx-reset sx-textField-input',
-  }), [inputProps])
+  }), [inputProps, other])
 
   const getHelperProps = useCallback(() => ({
     ...helperProps,
     className: 'simplexui-themes sx-reset sx-textField-helper',
   }), [helperProps])
+
+  const getPrefixAndSuffixProps = useCallback(() => ({
+    onClick: (e: React.MouseEvent<HTMLInputElement>) => {
+      domRef.current?.focus()
+      other.onClick?.(e)
+    },
+  }), [])
 
   return {
     Element,
@@ -106,9 +126,14 @@ export const useInput = (props: InputProps) => {
     getWrapperProps,
     getInputProps,
     getHelperProps,
+    getPrefixAndSuffixProps,
     helperText,
     labelText,
     startContent,
     endContent,
+    prefix,
+    suffix,
+    errorMessage,
+    isInvalid,
   }
 }

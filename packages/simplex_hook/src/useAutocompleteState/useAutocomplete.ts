@@ -1,116 +1,128 @@
 import React from 'react'
-import { Key } from '../types'
 import { useControllState } from '../useControllState/useControllState'
 import { createCollectionManager, RefObject, useId } from 'core'
 import { AutocompleteProps, AutocompleteState } from './types'
 
-const defaultGetLabel = (option: string | { label?: string }) => (
-  typeof option === 'string' ? option : option.label
+const defaultGetLabel = (option: string | number | { label?: string }) => (
+  typeof option === 'string' || typeof option === 'number' ? option : option.label
 )
 
-export default function useAutocomplete<Value extends object | string>(props: AutocompleteProps<Value>, inputRef: RefObject<HTMLInputElement | null>) {
+export default function useAutocomplete<Value extends object | string | number>(
+  props: AutocompleteProps<Value>,
+  inputRef: RefObject<HTMLInputElement | null>,
+  scrollRef: RefObject<HTMLUListElement | null>,
+) {
   const {
     value,
     defaultValue,
     onChange,
     open,
-    autoOpen,
     onOpenChange,
-    onFocus,
-    onBlur,
-    onSelect,
-    onClear,
     options = [],
     filterOptions,
     getLabel = defaultGetLabel,
     fillOut = false,
-    placeholder,
   } = props
 
   const id = useId()
-  const { getKey, filterByKey, getCollection } = createCollectionManager(options, {
+  const { getKey, filterByKey } = createCollectionManager(options, {
     getKey: getLabel,
     filterByKey: filterOptions,
     keyName: 'Label',
-    componentName: 'Autocmplete',
+    componentName: 'Autocomplete',
     loop: true,
   })
-  const [highlightedKey, setHighlightedKey] = React.useState<Key>('')
-  const [valueSelectedState, setValueSelectedState] = React.useState('')
-  const [isInputFocused, setIsInputFocused] = React.useState(false)
+  const [highlightedIndex, setHighlightedIndex] = React.useState<number>(-1)
+  const [confirmedValue, setConfirmedValue] = React.useState('')
+  const [isPositionUp, setIsPositionUp] = React.useState(false)
   const [isOpen, setIsOpen] = useControllState<boolean>(
     open,
-    autoOpen || false,
+    false,
     onOpenChange,
     'useAutocomplete open state',
   )
-  const [valueState, setValueState] = useControllState<string>(
+  const [inputValue, setInputValue] = useControllState<string | number>(
     value,
     defaultValue || '',
-    onChange,
+    e => onChange?.(e),
     'useAutocomplete value state',
   )
-  const filteredOptions = filterByKey(valueState)
+  const filteredOptions = filterByKey(inputValue)
+
+  React.useEffect(() => {
+    const handlePositionPopup = () => {
+      const popupHeight = scrollRef.current?.getBoundingClientRect().height || 0
+      const inputBottom = inputRef.current?.getBoundingClientRect().bottom || 0
+      const windowsHeight = window.innerHeight
+      setIsPositionUp((windowsHeight - inputBottom - popupHeight) < 20)
+    }
+
+    if (isOpen) {
+      handlePositionPopup()
+      window.addEventListener('resize', handlePositionPopup)
+      window.addEventListener('scroll', handlePositionPopup)
+    } else {
+      setIsPositionUp(false)
+    }
+    return () => {
+      window.removeEventListener('resize', handlePositionPopup)
+      window.removeEventListener('scroll', handlePositionPopup)
+    }
+  }, [isOpen, scrollRef, inputRef])
 
   const state = React.useMemo<AutocompleteState<Value>>(() => ({
-    value: valueState,
+    getLabel,
     isOpen,
     filteredOptions: isOpen ? filteredOptions : [],
-    highlightedLabel: highlightedKey,
-    isInputFocused,
-  }), [valueState, options, isOpen, highlightedKey, isInputFocused])
+    highlightedIndex,
+    isPopupUp: isPositionUp,
+  }), [inputValue, options, isOpen, highlightedIndex, isPositionUp])
 
   /* Wrapper */
   const handleWrapperKeyDown = React.useCallback((e: React.KeyboardEvent) => {
     if (!(e.target === inputRef.current)) return
-    let newHighlightedKey = highlightedKey
 
     switch (e.key) {
-      case ('ArrowDown'): {
-        e.preventDefault()
-        setIsOpen(true)
-        if (!highlightedKey) {
-          const firstOption = filteredOptions[0]
-          newHighlightedKey = firstOption ? getKey(firstOption) : ''
-        } else {
-          const keyList = filteredOptions.map(value => getKey(value))
-          const currentIndex = keyList.indexOf(highlightedKey)
-          const nextKey = keyList[(currentIndex + 1) % keyList.length]
-          newHighlightedKey = nextKey ?? ''
-        }
-        setHighlightedKey(newHighlightedKey)
-        break
-      }
       case ('ArrowUp'): {
         e.preventDefault()
         setIsOpen(true)
-        if (!highlightedKey) {
-          const lastOption = filteredOptions[filteredOptions.length - 1]
-          newHighlightedKey = lastOption ? getKey(lastOption) : ''
-        } else {
-          const keyList = filteredOptions.map(value => getKey(value))
-          const currentIndex = keyList.indexOf(highlightedKey)
-          const prevKey = keyList[(currentIndex - 1 + keyList.length) % keyList.length]
-          newHighlightedKey = prevKey ?? ''
-        }
-        setHighlightedKey(newHighlightedKey)
+        const prevIndex = highlightedIndex - 1 < 0
+          ? filteredOptions.length - 1
+          : highlightedIndex - 1
+
+        setHighlightedIndex(prevIndex)
+        scrollRef.current?.children[prevIndex]?.scrollIntoView({ block: 'nearest' })
+        break
+      }
+      case ('ArrowDown'): {
+        e.preventDefault()
+        setIsOpen(true)
+        const nextIndex = highlightedIndex + 1 >= filteredOptions?.length
+          ? 0
+          : highlightedIndex + 1
+
+        setHighlightedIndex(nextIndex)
+        scrollRef.current?.children[nextIndex]?.scrollIntoView({ block: 'nearest' })
         break
       }
       case ('Escape'): {
         e.preventDefault()
         setIsOpen(false)
-        setHighlightedKey('')
+        setHighlightedIndex(-1)
         break
       }
       case ('Enter'): {
         e.preventDefault()
         setIsOpen(false)
-        if (!highlightedKey) return
-        setValueState(highlightedKey)
-        setValueSelectedState(highlightedKey)
+        if (highlightedIndex > -1) {
+          const label = filteredOptions[highlightedIndex] ? getKey(filteredOptions[highlightedIndex]) : ''
+          setConfirmedValue(label)
+          setInputValue(label)
+        }
+        break
       }
     }
-  }, [highlightedKey, inputRef, filteredOptions])
+  }, [highlightedIndex, inputRef, filteredOptions])
 
   const wrapperProps = React.useMemo(() => ({
     onKeyDown: handleWrapperKeyDown,
@@ -126,58 +138,53 @@ export default function useAutocomplete<Value extends object | string>(props: Au
   const handleInputChange = React.useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setIsOpen(true)
     if (!e.target.value) {
-      setValueSelectedState('')
-      setValueState('')
+      setConfirmedValue('')
+      setInputValue('')
     }
-    setValueState(e.target.value)
+    setInputValue(e.target.value)
   }, [])
 
-  const handleInputFocus = React.useCallback(() => {
+  const handleInputFocus = React.useCallback((e: React.FocusEvent<HTMLInputElement>) => {
     setIsOpen(true)
-    setHighlightedKey('')
-    setIsInputFocused(true)
-    if (onFocus) onFocus()
+    setHighlightedIndex(-1)
+    props.onFocus?.(e)
   }, [])
 
-  const handleInputBlur = React.useCallback(() => {
+  const handleInputBlur = React.useCallback((e: React.FocusEvent<HTMLInputElement>) => {
     setIsOpen(false)
+
     if (fillOut) {
-      setValueState(valueSelectedState)
+      setInputValue(confirmedValue)
     }
-    setIsInputFocused(false)
-    if (onBlur) onBlur()
-  }, [valueSelectedState])
+    props.onBlur?.(e)
+  }, [confirmedValue, fillOut])
 
   const inputProps = React.useMemo<React.HTMLAttributes<HTMLInputElement>>(() => ({
     onChange: handleInputChange,
     onFocus: handleInputFocus,
     onBlur: handleInputBlur,
-    value: valueState,
+    value: inputValue,
     ref: inputRef,
-    placeholder,
-    id: id,
     autoComplete: 'off',
     role: 'combobox',
     'aria-autocomplete': 'list',
     'aria-controls': 'listbox-' + id,
-    'aria-activedescendant': 'option-' + highlightedKey,
+    'aria-activedescendant': highlightedIndex >= 0 ? 'option-' + highlightedIndex : undefined,
     'aria-expanded': isOpen,
     'aria-haspopup': 'listbox',
     'aria-owns': 'listbox-' + id,
-  }), [valueState, inputRef, handleInputBlur, highlightedKey])
+  }), [inputValue, inputRef, handleInputBlur, highlightedIndex])
 
   /* Clear Button */
   const handleClearButtonClick = React.useCallback((e: React.MouseEvent) => {
     e.preventDefault()
 
-    if (isInputFocused) {
-      setIsOpen(true)
-    }
-    if (onClear) onClear()
+    setIsOpen(true)
+    props.onClear?.()
 
-    setValueState('')
-    setValueSelectedState('')
-  }, [isInputFocused])
+    setInputValue('')
+    setConfirmedValue('')
+  }, [])
 
   const clearButtonProps = React.useMemo(() => ({
     tabIndex: -1,
@@ -190,33 +197,36 @@ export default function useAutocomplete<Value extends object | string>(props: Au
     'role': 'listbox',
     'id': 'listbox-' + id,
     'aria-labelledby': 'label-' + id,
+    'tabIndex': -1,
+    ref: scrollRef,
   }), [])
 
   /* OptionProps */
-  const handleOptionMouseMove = React.useCallback((label: string) => {
-    setHighlightedKey(label)
+  const handleOptionMouseMove = React.useCallback((index: number) => {
+    setHighlightedIndex(index)
   }, [])
 
-  const handleOptionClick = React.useCallback((e: React.MouseEvent, label: string) => {
+  const handleOptionClick = React.useCallback((e: React.MouseEvent, index: number) => {
     e.preventDefault()
+    const value = filteredOptions[index]
+    const label = value ? getKey(value) : ''
 
-    setValueState(label)
-    setValueSelectedState(label)
+    setInputValue(label)
+    setConfirmedValue(label)
+    props.onSelectOption?.(label, value)
     setIsOpen(false)
-    if (onSelect) onSelect(label, getCollection(label))
-  }, [])
+  }, [filteredOptions])
 
-  const getOptionProps = React.useCallback((label: string) => ({
-    onMouseMove: () => handleOptionMouseMove(label),
-    onMouseDown: (e: React.MouseEvent) => handleOptionClick(e, label),
+  const getOptionProps = React.useCallback((index: number) => ({
+    onMouseMove: () => handleOptionMouseMove(index),
+    onMouseDown: (e: React.MouseEvent) => handleOptionClick(e, index),
     'role': 'option',
-    'aria-selected': label === valueState,
-    'id': 'option-' + label,
-  }), [valueState])
+    'aria-selected': index === highlightedIndex,
+    'id': highlightedIndex >= 0 ? 'option-' + highlightedIndex : undefined,
+  }), [inputValue])
 
   return {
     wrapperProps,
-    labelProps,
     inputProps,
     listOptionsProps,
     getOptionProps,

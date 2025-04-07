@@ -1,151 +1,102 @@
-import { classnames, HTMLSimplexuiProps, ReactRef, useDOMRef } from 'core'
-import { useCallback } from 'react'
 import {
+  AutocompleteProps,
   useAutocomplete as useSimplexAutocomplete,
-  type AutocompleteProps as SimplexProps,
 } from 'simplex_hook'
+import { useRef, useCallback } from 'react'
 import './styles/Autocomplete.css'
+import { useInputProps } from '../../Input/src/useInput'
+import { useDOMRef } from 'core'
 
-export type RefAutocomplete = HTMLInputElement | null
-export interface AutocompleteProps<Value extends object | string>
-  extends HTMLSimplexuiProps<'input', 'onChange' | 'onSelect'>,
-  SimplexProps<Value> {
-  ref?: ReactRef<RefAutocomplete>
+interface Props extends Omit<useInputProps, 'value' | 'defaultValue' | 'onChange'> {
   disableClear?: boolean
-  placeholder?: string
-  label?: string
-  /* delete */
-  onChange?: (key: string) => void
-  onSelect?: (label: string, option: Value | undefined) => void
-  /* delete */
-  renderRoot?: (
-    rootProps: React.HTMLAttributes<HTMLElement>,
-    inputProps: React.HTMLAttributes<HTMLInputElement>,
-    clearProps: React.HTMLAttributes<HTMLButtonElement>
-  ) => React.ReactNode
-  renderOption?: (
-    props: React.HTMLAttributes<HTMLElement>,
-    value: Value,
-    index: number,
-  ) => React.ReactNode
 }
 
-export const useAutocomplete = <Value extends object | string>(props: AutocompleteProps<Value>) => {
+export type useAutocompleteProps<T extends string | object> = Props & AutocompleteProps<T>
+
+export const useAutocomplete = <T extends string | object>(props: useAutocompleteProps<T>) => {
   const {
     as,
     ref,
-    getLabel,
-    label,
-    disableClear,
-    renderRoot,
-    renderOption,
-    placeholder,
+    disableClear = false,
+    value,
+    defaultValue,
+    onChange,
+    open,
+    onOpenChange,
+    options,
+    filterOptions,
+    getLabel: useGetLabel,
+    fillOut,
     ...otherProps
   } = props
 
   const Element = as || 'div'
-
-  const domRef = useDOMRef<HTMLInputElement>(ref)
+  const domRef = useDOMRef(ref)
+  const domScrollRef = useRef(null)
 
   const {
-    wrapperProps,
-    labelProps,
-    inputProps,
-    getOptionProps: optionProps,
+    isOpen,
+    isPopupUp,
+    highlightedIndex,
     filteredOptions,
-    value,
-    highlightedLabel,
-    clearButtonProps,
-    isInputFocused,
-  } = useSimplexAutocomplete({
-    ...otherProps,
     getLabel,
-    placeholder,
-  }, domRef)
+    wrapperProps,
+    inputProps,
+    listOptionsProps,
+    clearButtonProps,
+    getOptionProps: getOption,
+  } = useSimplexAutocomplete({
+    value,
+    defaultValue,
+    onChange,
+    open,
+    onOpenChange,
+    options,
+    filterOptions,
+    getLabel: useGetLabel,
+    fillOut,
+  },
+  domRef,
+  domScrollRef)
 
-  /* Wrapper */
-  const wrapperClasses = classnames({},
-    'sx-autocomplete',
-  )
-
-  const getWrapperProps = useCallback(() => ({
+  const getRootProps = useCallback(() => ({
     ...wrapperProps,
-    className: wrapperClasses,
+    'data-open': isOpen || undefined,
+    'data-popup-up': isPopupUp || undefined,
+    className: 'simplexui-themes sx-autocomplete',
+  }), [wrapperProps, isPopupUp, isOpen])
+
+  const getInputProps = useCallback<() => useInputProps>(() => ({
+    ...inputProps,
+    ...otherProps,
+    className: 'simplexui-themes',
   }), [wrapperProps])
 
-  /* InputRoot */
-  const inputRootClasses = classnames({},
-    'sx-autocomplete-inputRoot',
-  )
+  const getListOptionsProps = useCallback(() => ({
+    ...listOptionsProps,
+    className: 'simplexui-themes sx-reset sx-autocomplete-list',
+  }), [wrapperProps])
 
-  const getInputRootProps = useCallback(() => ({
-    'data-focus': isInputFocused || undefined,
-    'data-value': value || placeholder || undefined,
-    className: inputRootClasses,
-  }), [isInputFocused, value])
+  const getOptionProps = useCallback((index: number) => ({
+    ...getOption(index),
+    'data-select': highlightedIndex === index || undefined,
+    className: 'simplexui-themes sx-autocomplete-option',
+  }), [getOption, highlightedIndex])
 
-  /* Label */
-  const labelClasses = classnames({},
-    'sx-autocomplete-label',
-  )
-
-  const getLabelProps = useCallback(() => ({
-    ...labelProps,
-    className: labelClasses,
-  }), [])
-
-  /* Input */
-  const inputClasses = classnames({},
-    'sx-autocomplete-input',
-  )
-
-  const getInputProps = useCallback(() => ({
-    ...inputProps,
-    className: inputClasses,
-  }), [inputProps])
-
-  /* Options */
-  const optionsClasses = classnames({},
-    'sx-autocomplete-options',
-  )
-
-  const getOptionsProps = useCallback(() => ({
-    className: optionsClasses,
-  }), [])
-
-  /* Option */
-  const optionClasses = classnames({
-  }, 'sx-autocomplete-option')
-
-  const getOptionProps = useCallback((label: string) => ({
-    ...optionProps(label),
-    'data-focus': highlightedLabel === label || undefined,
-    'data-selected': value === label || undefined,
-    className: optionClasses,
-  }), [highlightedLabel, optionProps, value])
-
-  /* Clear Button */
   const getClearButtonProps = useCallback(() => ({
     ...clearButtonProps,
-    className: 'sx-autocomplete-clear-button simplexui-themes',
-  }), [clearButtonProps])
+    className: 'simplexui-themes sx-reset sx-autocomplete-clearButton',
+  }), [wrapperProps])
 
   return {
     Element,
-    getLabel,
-    label,
-    value,
-    disableClear,
     filteredOptions,
-    getWrapperProps,
-    getLabelProps,
-    getInputRootProps,
+    getLabel,
+    disableClear,
+    getRootProps,
     getInputProps,
-    getOptionsProps,
-    getOptionProps,
+    getListOptionsProps,
     getClearButtonProps,
-    /* render */
-    renderRoot,
-    renderOption,
+    getOptionProps,
   }
 }

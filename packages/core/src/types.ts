@@ -6,7 +6,7 @@ export type PropsOf<T extends As> = React.ComponentPropsWithoutRef<T>
 
 export type HTMLSimplexuiProps<T extends As = 'div', OmitKeys extends keyof PropsOf<T> = never > = Omit<
   PropsOf<T>,
-  'ref' | 'size' | 'color' | 'defaultChecked' | OmitKeys
+  'ref' | 'size' | 'color' | 'defaultChecked' | 'prefix' | OmitKeys
 > & {
   as?: As
 } & DataAttributes
@@ -25,7 +25,7 @@ export namespace GenericStyles {
   }
 }
 
-export type ReactRef<T extends HTMLElement | null > = React.RefObject<T> | React.MutableRefObject<T> | React.Ref<T>
+export type ReactRef<T> = React.RefObject<T> | React.MutableRefObject<T> | React.Ref<T>
 export type RefObject<T> = { current: T }
 
 export type Key = string

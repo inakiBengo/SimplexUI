@@ -1,0 +1,15 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "composite": true,
+    "noEmit": false,
+    "emitDeclarationOnly": true,
+    "outDir": "dist",
+    "rootDir": ".",
+  },
+  "exclude": ["dist", "node_modules", "**/__test__/*.test.ts", "**/storybook/*.stories.tsx"],
+  "include": [
+    "./**/**/*.ts",
+    "./**/**/*.tsx"
+  ],
+}

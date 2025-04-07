@@ -1,0 +1,45 @@
+.sx-buttonGroup {
+  display: flex;
+  width: fit-content;
+
+  &:where(.sx-orientation-vertical) {
+    flex-direction: column;
+
+    :where(.sx-button) {
+      border-radius: 0;
+  
+      &:first-child {
+        border-radius: var(--buttonGroup-radius) var(--buttonGroup-radius) 0 0;
+      }
+      &:last-child {
+        border-radius: 0 0 var(--buttonGroup-radius) var(--buttonGroup-radius);
+      }
+    }
+  }
+  &:not(.sx-orientation-vertical) :where(.sx-button) {
+    border-radius: 0;
+
+    &:first-child {
+      border-radius: var(--buttonGroup-radius) 0 0 var(--buttonGroup-radius);
+    }
+    &:last-child {
+      border-radius: 0 var(--buttonGroup-radius) var(--buttonGroup-radius) 0;
+    }
+  }
+}
+
+.sx-buttonGroup:where(.sx-radius-none) .sx-button {
+  --buttonGroup-radius: var(--radius-none);
+}
+.sx-buttonGroup:where(.sx-radius-sm) .sx-button {
+  --buttonGroup-radius: var(--radius-sm);
+}
+.sx-buttonGroup:where(.sx-radius-md) .sx-button {
+  --buttonGroup-radius: var(--radius-md);
+}
+.sx-buttonGroup:where(.sx-radius-lg) .sx-button {
+  --buttonGroup-radius: var(--radius-lg);
+}
+.sx-buttonGroup:where(.sx-radius-full) .sx-button {
+  --buttonGroup-radius: var(--radius-full);
+}

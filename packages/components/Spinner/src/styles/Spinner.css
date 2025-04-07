@@ -1,0 +1,36 @@
+.sx-loader {
+  width: var(--font-size-100);
+  height: var(--font-size-100);
+  position: relative;
+
+  i {
+    width: calc(100% - 4px);
+    height: calc(100% - 4px);
+    border-radius: 9999px;
+    border: solid 2px var(--color-gray-500);
+    position: absolute;
+  } 
+
+  :first-child {
+    border-top-color: transparent;
+    border-bottom-color: transparent;
+    border-left-color: transparent;
+    animation: sx-spinner .8s linear infinite;
+  }
+
+  :last-child {
+    border-color: var(--color-gray-300);
+    border-top-color: transparent;
+    border-right-color: transparent;
+    animation: sx-spinner .8s ease infinite;
+  }
+}
+
+@keyframes sx-spinner {
+  from {
+    rotate: 0deg;
+  }
+  to {
+    rotate: 1turn;
+  }
+}

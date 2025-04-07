@@ -1,24 +1,23 @@
 import { Key } from 'core'
 
-export interface AutocompleteProps<T extends object | string> {
+export interface AutocompleteProps<T extends object | string | number> {
   /* Controlled state */
-  value?: Key
-  defaultValue?: Key
-  onChange?: (key: string) => void
+  value?: string | number
+  defaultValue?: string | number
+  onChange?: (e: string | number) => void
 
   /* Controlled open options */
   open?: boolean
-  autoOpen?: boolean /* like autofocus but when opening the options list when rendering the component */
   onOpenChange?: (open: boolean) => void
 
   options?: T[]
   filterOptions?: (option: T, inputValue: string) => boolean
-  getLabel?: (option: T) => string | undefined
+  getLabel?: (option: T) => string | number | undefined
 
   /* generic events */
-  onFocus?: () => void
-  onBlur?: () => void
-  onSelect?: (label: string, option: T | undefined) => void
+  onFocus?: (e: React.FocusEvent<HTMLInputElement>) => void
+  onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void
+  onSelectOption?: (label: string, option: T | undefined) => void
   onClear?: () => void
 
   fillOut?: boolean
@@ -26,9 +25,9 @@ export interface AutocompleteProps<T extends object | string> {
 }
 
 export interface AutocompleteState<T> {
-  highlightedLabel: Key | null
+  highlightedIndex: number
   isOpen: boolean
   filteredOptions: T[]
-  value: string
-  isInputFocused: boolean
+  getLabel?: (option: T) => string | number | undefined
+  isPopupUp: boolean
 }

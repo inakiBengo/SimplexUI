@@ -1,0 +1,190 @@
+.sx-button {
+  --color-text: var(--color-900);
+  position: relative;
+
+  min-height: 2rem;
+  min-width: 2rem;
+  font-size: var(--font-size-100);
+  line-height: var(--line-height-100);
+  font-weight: var(--font-weight-bold);
+  border-radius: var(--radius-md);
+  border: solid 1px var(--color-500);
+  color: var(--color-text);
+  fill: var(--color-text);
+  background-color: var(--color-500);
+  padding: 0 0.8rem;
+  user-select: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  & span {
+    display: inherit;
+  }
+
+  .sx-button-content {
+    width: 1em;
+    height: 1em;
+  }
+  .sx-button-startContent {
+    margin-right: 0.5rem;
+  }
+  .sx-button-endContent{
+    margin-left: 0.5rem;
+  }
+
+  &[data-icononly] {
+    padding: 0;
+
+    .sx-button-content {
+      margin-right: 0;
+      margin-left: 0;
+    }
+  }
+  
+  .sx-button-content-absolute {
+    position: absolute;
+
+    & ~ span {
+      visibility: hidden;
+    }
+  }
+
+  @media (hover:hover) {
+    &:where(:hover:not(:disabled)) {
+      border-color: var(--color-600);
+      background-color: var(--color-600);
+      transition: border-color .2s, background-color .2s, color .2s, fill .2s;
+    }
+  }
+
+  &:where(:active:not(:disabled)) {
+    background-color: var(--color-700);
+    border-color: var(--color-700);
+    transition: border-color .2s, background-color .2s, color .2s, fill .2s;
+  }
+
+  &:where(:focus-visible) {
+    outline: solid 2px var(--color-primary-300);
+    outline-offset: 2px;
+    z-index: 10;
+  }
+
+  &:where(:disabled) {
+    cursor: no-drop;
+    background-color: var(--color-200);
+    border-color: var(--color-200);
+    --color-text: var(--color-500);
+    transition: none;
+  }
+}
+
+/*** VARIANTS ***/
+.sx-button:where(.sx-variant-solid) {
+  background-color: var(--color-500);
+  border: solid 1px var(--color-500);
+  --color-text: var(--color-contrast);
+
+  @media (hover:hover) {
+    &:where(:hover:not(:disabled)) {
+      border-color: var(--color-600);
+      background-color: var(--color-600);
+    }
+  }
+
+  &:where(:active:not(:disabled)) {
+    background-color: var(--color-700);
+    border-color: var(--color-700);
+  }
+
+  &:where(:disabled) {
+    background-color: var(--color-gray-200);
+    border-color: var(--color-gray-200);
+    --color-text: var(--color-gray-500);
+  }
+}
+
+.sx-button:where(.sx-variant-outline) {
+  --color-text: var(--color-700);
+  background-color: transparent;
+  border: solid 1px var(--color-300);
+
+  @media (hover:hover) {
+    &:hover:not(:disabled) {
+      border-color: var(--color-600);
+    }
+  }
+
+  &:active:not(:disabled) {
+    background-color: var(--color-200);
+  }
+
+  &:disabled {
+    border-color: var(--color-gray-200);
+    --color-text: var(--color-gray-200);
+  }
+}
+
+.sx-button:where(.sx-variant-light) {
+  --color-text: var(--color-700);
+  background-color: transparent;
+  border: solid 1px transparent;
+
+  @media (hover:hover) {
+    &:hover:not(:disabled) {
+      background-color: var(--color-200);
+    }
+  }
+
+  &:active:not(:disabled) {
+    background-color: var(--color-300);
+  }
+
+  &:disabled {
+    --color-text: var(--color-gray-300);
+    background-color: var(--color-gray-100);
+  }
+}
+
+/*** FULL WIDTH ***/
+.sx-button:where(.sx-fullWidth) {
+  width: 100%;
+}
+
+/*** SIZE ***/
+.sx-button:where(.sx-size-sm) {
+  min-height: 1.5rem;
+  min-width: 1.5rem;
+  font-size: var(--font-size-75);
+  line-height: var(--line-height-75);
+}
+.sx-button:where(.sx-size-md) {
+  min-height: 2rem;
+  min-width: 2rem;
+  font-size: var(--font-size-100);
+  line-height: var(--line-height-100);
+}
+.sx-button:where(.sx-size-lg) {
+  min-height: 2.5rem;
+  min-width: 2.5rem;
+  font-size: var(--font-size-200);
+  line-height: var(--line-height-200);
+}
+
+/*** RADIUS ***/
+.sx-button:where(.sx-radius-none) {
+  border-radius: var(--radius-none);
+}
+.sx-button:where(.sx-radius-sm) {
+  border-radius: var(--radius-sm);
+}
+.sx-button:where(.sx-radius-md) {
+  border-radius: var(--radius-md);
+}
+.sx-button:where(.sx-radius-lg) {
+  border-radius: var(--radius-lg);
+}
+.sx-button:where(.sx-radius-full) {
+  border-radius: var(--radius-full);
+}

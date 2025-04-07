@@ -1,163 +1,253 @@
-.sx-textField-root {
-  --textField-text-color: var(--neutral-10);
+.sx-textField {
+  --TextField-padding-x: 10px;
+  --TextField-padding-y: 0px;
+  --TextField-margin-y: 1rem;
+  --TextField-width: 250px;
+  --TextField-height: 36px;
+  --TextField-radius: var(--radius-md);
+  --TextField-border-color: var(--color-gray-300);
+  --TextField-bg-color: transparent;
 
-  --textField-color-decoration: var(--neutral-8);
-  --textField-color-focus: var(--primary-5);
-  --textField-color-invalid: var(--error-5);
-
-  --textField-bg-color: transparent;
-  --textField-bg-color-hover: transparent;
-  --textField-bg-color-focus: transparent;
-  --textField-bg-color-invalid: transparent;
-
-  --textField-border-width: 2px;
-  --textField-border-radius: var(--radius-md);
-  --textField-border-style: solid;
-  --textField-border-color: var(--neutral-5);
-  --textField-border-color-hover: var(--neutral-6);
-  --textField-border-color-focus: var(--primary-5);
-  --textField-border-color-invalid: var(--error-5);
-
-  --textField-font-size: var(--font-size-100);
-  --textField-line-height: var(--line-height-100);
-  --textField-extra-font-size: var(--font-size-50);
-  --textField-extra-line-height: var(--line-height-50);
-
-  --textField-width: 25ch;
-  --textField-height: 1.8em;
-  --textField-padding-y: 0;
-  --textField-padding-x: var(--space-2);
-
-  --textField-transition-duration: .2s;
-}
-
-.sx-textField-root {
-  width: var(--textField-width);
-  height: var(--textField-height);
-  margin-top: 1.3rem;
+  margin: var(--TextField-margin-y) 0;
+  position: relative;
+  width: var(--TextField-width);
 
   .sx-textField-wrapper {
-    border-color: var(--textField-border-color);
-    border-width: var(--textField-border-width);
-    border-style: var(--textField-border-style);
-    border-radius: var(--textField-border-radius);
-    background-color: var(--textField-bg-color);
-    padding: var(--textField-padding-y) var(--textField-padding-x);
+    padding: var(--TextField-padding-y) var(--TextField-padding-x);
+    border-radius: var(--TextField-radius);
+    border: solid 1px var(--TextField-border-color);
+    height: var(--TextField-height);
+    background-color: var(--TextField-bg-color);
     display: flex;
     align-items: center;
-    height: 100%;
-    width: 100%;
-    position: relative;
-    transition: border-color 0.15s ease-in-out, background-color 0.15s ease-in-out;
     box-sizing: border-box;
+    transition: border-color 0.2s ease-out, background 0.2s ease-out;
 
     .sx-textField-label {
-      color: var(--textField-color-decoration);
-      font-size: var(--textField-font-size);
-      line-height: var(--textField-line-height);
-      left:var(--textField-padding-x);
-      transition: top var(--textField-transition-duration) ease-in-out, font-size var(--textField-transition-duration) ease-in-out;
+      padding-inline: var(--TextField-padding-x);
+      color: var(--color-gray-600);
+      z-index: 1;
       position: absolute;
+      transition: transform 0.2s ease-out, font-size 0.2s ease-out, line-height 0.2s ease-out;
+      transform: translateY(0);
+      left: 0;
+      width: 100%;
+      box-sizing: border-box;
       text-wrap: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      width: fit-content;
-      cursor: text;
       user-select: none;
-      /* The "top" value overrides "translateY" so that CSS knows it is centered and can animate it. */
-      top: 50%;
-      transform: translateY(-50%);
+      cursor: text;
     }
-    
-    .sx-textField-input {
 
-      font-size: var(--textField-font-size);
-      line-height: var(--textField-line-height);
-      outline-width: var(--textField-outlined-width);
-      outline-color: var(--textField-outlined-color);
-      outline-style: var(--textField-outlined-style);
-      color: var(--textField-text-color);
-      width: 100%;
-      height: 100%;
-      border-radius: calc(var(--textField-border-radius) / 1.5);
+    .sx-textField-input {
+      color: var(--color-gray-900);
+      font-weight: var(--font-weight-medium);
+      font-size: var(--font-size-100);
+      line-height: var(--line-height-100);
       border: none;
-      outline-offset: 2px;
+      outline: none;
       background-color: transparent;
+      width: 100%;
+      &::placeholder {
+        color: var(--neutral-5);
+      }
+    }
+
+    .sx-textField-prefix, .sx-textField-suffix  {
+      font-size: var(--font-size-100);
+      line-height: var(--line-height-1000);
+      font-weight: var(--font-weight-medium);
+      color: var(--color-gray-900);
+    }
+    .sx-textField-prefix {
+      padding-right: 5px;
+    }
+    .sx-textField-suffix {
+      padding-left: 5px;
+    }
+
+    .sx-textField-startContent {
+      padding-right: var(--TextField-padding-x);
+      position: relative;
+
+      &::after {
+        content: "";
+        background-color: var(--color-gray-500);
+        width: 1px;
+        height: 80%;
+        position: absolute;
+        top: 10%;
+        right: calc(var(--TextField-padding-x)/2.5);
+      }
+    }
+    .sx-textField-endContent {
+      padding-left: var(--TextField-padding-x);
+      position: relative;
+
+      &::before {
+        content: "";
+        background-color: var(--color-gray-500);
+        width: 1px;
+        height: 80%;
+        position: absolute;
+        top: 10%;
+        left: calc(var(--TextField-padding-x)/2.5);
+      }
     }
   }
 
   .sx-textField-helper {
-    color: var(--textField-color-decoration);
-    font-size: var(--textField-extra-font-size);
-    line-height: var(--textField-extra-line-height);
-    margin: 0.2rem 0;
-    padding: 0 var(--textField-padding-x);
+    padding: 2px var(--TextField-padding-x);
+    font-size: var(--font-size-50);
+    line-height: var(--line-height-50);
+    width: 100%;
+    color: var(--color-gray-600);
+    min-height: 1rem;
+  }
+
+  &[data-focused], &[data-filled] {
+    .sx-textField-label {
+      transform: translateY(calc(var(--TextField-height)/-2 - 10px));    
+      font-size: var(--font-size-50);
+      line-height: var(--line-height-50);
+      cursor: default;
+    }
   }
 
   @media (hover:hover) {
-    .sx-textField-wrapper:hover {
-      border-color: var(--textField-border-color-hover);
-      background-color: var(--textField-bg-color-hover);
+    &:not([data-disabled], [data-focused], [data-invalid]) :where(.sx-textField-wrapper:hover) {
+      --TextField-border-color: var(--color-gray-600);
     }
   }
 
   &[data-focused] {
+    --TextField-border-color: var(--color-primary-500);
     .sx-textField-wrapper {
-      border-color: var(--textField-border-color-focus);
-      background-color: var(--textField-bg-color-focus);
-  
+      box-shadow: 0 0 0 0.2rem var(--color-primary-a);
+    }
+    .sx-textField-label {
+      color: var(--color-primary-600);
+    }
+  }
+
+  &[data-disabled] {
+    --TextField-border-color: var(--color-gray-300);
+    .sx-textField-label, 
+    .sx-textField-helper, 
+    .sx-textField-input, 
+    .sx-textField-prefix, .sx-textField-suffix {
+      color: var(--color-gray-300);
+      fill: var(--color-gray-300);
+    }
+    .sx-textField-endContent, .sx-textField-startContent {
+      &::after, &::before {
+        background-color: var(--color-gray-300);
+      }
+    }
+    .sx-textField-input, .sx-textField-wrapper, .sx-textField-label {
+      cursor: no-drop;
+    }
+    &[data-filled] {
       .sx-textField-label {
-        color: var(--textField-color-focus);
-        font-size: var(--textField-extra-font-size);
-        line-height: var(--textField-extra-line-height);
-        top: -12px;
         cursor: default;
       }
     }
   }
 
-  &[data-filled] {
-    --textField-label-font-size: var(--textField-label-font-size-focus-filled);
-    --textField-label-line-height: var(--textField-label-line-height-focus-filled);
-  
-    .sx-textField-label {
-      font-size: var(--textField-extra-font-size);
-      line-height: var(--textField-extra-line-height);
-      top: -12px;
-      cursor: default;
-    }
-  }
-
   &[data-invalid] {
-    .sx-textField-wrapper {
-      background-color: var(--textField-bg-color-invalid);
-      border-color: var(--textField-border-color-invalid);
+    --TextField-border-color: var(--color-error-500);
+    .sx-textField-label, .sx-textField-helper {
+      color: var(--color-error-600);
+    }
 
-      .sx-textField-label {
-        color: var(--textField-color-invalid);
+    &:where([data-disabled]) {
+      --TextField-border-color: var(--color-error-300);
+      .sx-textField-label, .sx-textField-helper {
+        color: var(--color-error-300);
       }
     }
-    .sx-textField-helper {
-      color: var(--textField-color-invalid);
+  }
+}
+
+/*** Variant ***/
+/* Filled */
+.sx-textField:where(.sx-variant-filled) {
+  --TextField-border-color: transparent;
+  --TextField-bg-color: var(--color-gray-200);
+
+  @media (hover:hover) {
+    &:not([data-disabled], [data-focused], [data-invalid]) {
+      :where(.sx-textField-wrapper:hover) {
+        --TextField-border-color: transparent;
+        --TextField-bg-color: var(--color-gray-300);
+      }
     }
   }
-}
 
-.sx-textField-light {
-  --textField-border-radius: 0;
+  &[data-disabled] {
+    --TextField-border-color: transparent;
+    .sx-textField-input {
+      color: var(--color-gray-500)
+    }
+  }
 
-  .sx-textField-wrapper {
-    border-width: 0 0 var(--textField-border-width) 0;
+  &[data-focused] {
+    --TextField-bg-color: var(--color-gray-300);
   }
 }
 
-.sx-textField-filled {
-  --textField-bg-color: var(--neutral-3);
-  --textField-bg-color-hover: var(--neutral-4);
-  --textField-bg-color-focus: var(--neutral-5);
-  --textField-bg-color-invalid: var(--neutral-3);
+/* Light */
+.sx-textField:where(.sx-variant-light) {
 
   .sx-textField-wrapper {
-    border: none;
+    border-radius: 0;
+    background-color: transparent;
+    border-width: 0px;
+    border-bottom-width: 1px;
+
+    .sx-textField-startContent, .sx-textField-endContent {
+      &::after, &::before {
+        background-color: transparent;
+      }
+    }
   }
+
+  &[data-focused] .sx-textField-wrapper {
+    box-shadow: inset 0 -0.2rem 0px -1px var(--color-primary-a);
+  }
+} 
+
+/*** sizes ***/
+.sx-textField:where(.sx-size-sm) {
+  --TextField-height: 28px;
+  --TextField-margin-y: 1rem;
+}
+.sx-textField:where(.sx-size-md) {
+  --TextField-height: 36px;
+  --TextField-margin-y: 1.1rem;
+}
+.sx-textField:where(.sx-size-lg) {
+  --TextField-height: 42px;
+  --TextField-margin-y: 1.2rem;
+}
+
+/*** radius ***/
+.sx-radius-none {
+  --TextField-radius: none;
+}
+.sx-radius-sm {
+  --TextField-radius: var(--radius-sm);
+}
+.sx-radius-md {
+  --TextField-radius: var(--radius-md);
+}
+.sx-radius-lg {
+  --TextField-radius: var(--radius-lg);
+}
+.sx-radius-xl {
+  --TextField-radius: var(--radius-xl);
+}
+.sx-radius-full {
+  --TextField-radius: var(--radius-full);
 }

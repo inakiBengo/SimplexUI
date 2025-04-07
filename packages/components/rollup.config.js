@@ -35,7 +35,7 @@ export default [
         extensions: ['.js', '.ts', '.tsx', '.css'],
       }),
       typescript({
-        tsconfig: './tsconfig.json',
+        tsconfig: './tsconfig.build.json',
         exclude: ['./Autocomplete/**', './Accordion/**'],
       }),
       babel({
